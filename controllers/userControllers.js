@@ -1,7 +1,4 @@
-const {
-  registerUser,
-  findUserByMail,
-} = require("../services/user");
+const { registerUser, findUserByMail } = require("../services/auth");
 const fs = require("fs/promises");
 const path = require("path");
 const ErrorHandler = require("../helpers/ErrorHandler");
@@ -23,6 +20,7 @@ const registerController = async (req, res) => {
   //   email,
   //   password,
   //   avatarURL,
+  //   verify;
   // }
 
   const { email } = user;

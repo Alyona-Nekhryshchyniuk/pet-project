@@ -9,7 +9,7 @@ const {
   registerController,
   loginController,
   logoutController,
-} = require("../controllers/userControllers");
+} = require("../../controllers/userControllers");
 
 router.post("/register", tryCatchMiddleware(registerController));
 
