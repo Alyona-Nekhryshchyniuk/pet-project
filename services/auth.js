@@ -1,11 +1,11 @@
-const { User } = require("../helpers/schema");
+const { User, UserUpdate } = require("../helpers/schema");
 const gravatar = require("gravatar");
 
 // register
 const registerUser = async ({ email, password }) => {
   const avatar = gravatar.url(email);
 
-  const emailAlreadyInDB = await User.findOne({ email });
+  const emailAlreadyInDB = await UserUpdate.findOne({ email });
   if (emailAlreadyInDB) return;
 
   const user = await User.create({
@@ -18,16 +18,26 @@ const registerUser = async ({ email, password }) => {
 
 // find By Mail
 const findUserByMail = async (email) => {
-  return await User.findOne({ email });
+  return await UserUpdate.findOne({ email });
 };
 
 // getUserById
 const getUserById = async (_id) => {
-  return await User.findById({ _id });
+  return await UserUpdate.findById({ _id });
+};
+
+// updateUser
+const updateUser = async (userId, objWithUpdatedUserData) => {
+  return await UserUpdate.findOneAndUpdate(
+    { _id: userId },
+    { ...objWithUpdatedUserData },
+    { new: true }
+  );
 };
 
 module.exports = {
   registerUser,
   findUserByMail,
   getUserById,
+  updateUser,
 };

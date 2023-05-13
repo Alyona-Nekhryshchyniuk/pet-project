@@ -1,6 +1,10 @@
-const { registerUser, findUserByMail } = require("../services/auth");
+const {
+  registerUser,
+  findUserByMail,
+  updateUser,
+} = require("../services/auth");
 const ErrorHandler = require("../helpers/ErrorHandler");
-const { userJOISchema } = require("../helpers/schema.js");
+const { userJOISchema, userUpdateJOISchema } = require("../helpers/schema.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -56,24 +60,37 @@ const loginController = async (req, res) => {
 };
 
 const updateController = async (req, res) => {
+  let updatedAvatar;
+  let updatedUser;
   if (req.file) {
     req.user._doc.avatar = req.file.path;
+    updatedAvatar = await findOneAndUpdate(req.params.userId, {
+      ...req.file.path,
+    });
   }
+
   if (req.body) {
+    const { error } = userUpdateJOISchema.validate(req.body);
+    if (error) throw ErrorHandler(400, error.message);
     for (let key in req.body) {
       req.user._doc[key] = req.body[key];
     }
     console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}", req.user);
+
+    updatedUser = await updateUser(req.params.userId, req.body);
+    console.log(user);
+    if (!updatedUser) {
+      throw ErrorHandler(404, "Not found");
+    }
   }
 
-  res.sendStatus(200);
+  res.json({ ...updatedUser, ...updatedAvatar });
 };
 
 const currentController = (req, res) => {
   const { email } = req.user._doc;
   res.json({ email });
 };
-
 
 const logoutController = (req, res) => {
   req.headers.authorization = "";
