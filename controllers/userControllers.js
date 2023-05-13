@@ -1,11 +1,8 @@
 const { registerUser, findUserByMail } = require("../services/auth");
-const fs = require("fs/promises");
-const path = require("path");
 const ErrorHandler = require("../helpers/ErrorHandler");
 const { userJOISchema } = require("../helpers/schema.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-var Jimp = require("jimp");
 
 const registerController = async (req, res) => {
   // в req.body {email: ***, password:***}
@@ -58,25 +55,9 @@ const loginController = async (req, res) => {
   });
 };
 
-const updateController = async (req, res, next) => {
-  console.log(req.file);
+const updateController = async (req, res) => {
   if (req.file) {
-    const modifFileName = `${Math.random() * (999 - 1) + 1}${
-      req.file.filename
-    }`;
-    const tempDirFullPath = path.resolve(req.file.path);
-    const permDirFullPath = path.resolve("public", "avatar", modifFileName);
-    const fullFilePathOnUserObj = path.join("avatar", modifFileName);
-
-    Jimp.read(req.file.path, (err, img) => {
-      if (err) throw err;
-      img.resize(250, 250);
-    });
-
-    await fs.rename(tempDirFullPath, permDirFullPath);
-
-    console.log("}}}}", req.user);
-    req.user._doc.avatar = fullFilePathOnUserObj;
+    req.user._doc.avatar = req.file.path;
   }
   if (req.body) {
     for (let key in req.body) {
@@ -88,6 +69,12 @@ const updateController = async (req, res, next) => {
   res.sendStatus(200);
 };
 
+const currentController = (req, res) => {
+  const { email } = req.user._doc;
+  res.json({ email });
+};
+
+
 const logoutController = (req, res) => {
   req.headers.authorization = "";
   req.user.token = "";
@@ -98,5 +85,6 @@ module.exports = {
   registerController,
   loginController,
   updateController,
+  currentController,
   logoutController,
 };
