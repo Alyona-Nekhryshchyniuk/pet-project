@@ -18,7 +18,7 @@ const userSchema = new Schema({
     default: false,
   },
 
-  avatarURL: String,
+  avatar: String,
   token: String,
 });
 
