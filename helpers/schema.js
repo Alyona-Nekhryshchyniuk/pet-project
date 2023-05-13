@@ -7,11 +7,13 @@ const passwordRegexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
 const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
 const phoneNumberRegexp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
+
 const handleMongooseError = (error, data, next) => {
   const { name, code } = error;
   error.status = name === "MongoServerError" && code === 11000 ? 409 : 400;
   next();
 };
+
 
 const userSchema = new Schema(
   {

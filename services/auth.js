@@ -3,7 +3,7 @@ const gravatar = require("gravatar");
 
 // register
 const registerUser = async ({ email, password }) => {
-  const avatarURL = gravatar.url(email);
+  const avatar = gravatar.url(email);
 
   const emailAlreadyInDB = await User.findOne({ email });
   if (emailAlreadyInDB) return;
@@ -11,7 +11,7 @@ const registerUser = async ({ email, password }) => {
   const user = await User.create({
     email,
     password,
-    avatarURL,
+    avatar,
   });
   return user;
 };
@@ -21,7 +21,13 @@ const findUserByMail = async (email) => {
   return await User.findOne({ email });
 };
 
+// getUserById
+const getUserById = async (_id) => {
+  return await User.findById({ _id });
+};
+
 module.exports = {
   registerUser,
   findUserByMail,
+  getUserById,
 };

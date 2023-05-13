@@ -1,11 +1,8 @@
 const { registerUser, findUserByMail } = require("../services/auth");
-const fs = require("fs/promises");
-const path = require("path");
 const ErrorHandler = require("../helpers/ErrorHandler");
 const { userJOISchema } = require("../helpers/schema.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-var Jimp = require("jimp");
 
 const registerController = async (req, res) => {
   // в req.body {email: ***, password:***}
@@ -19,7 +16,7 @@ const registerController = async (req, res) => {
   // user на сервере будет таким {
   //   email,
   //   password,
-  //   avatarURL,
+  //   avatar,
   //   verify;
   // }
 
@@ -46,8 +43,10 @@ const loginController = async (req, res) => {
   const { _id } = user;
   const { SECRET } = process.env;
   const token = jwt.sign({ _id }, SECRET);
-  req.user = { ...user, token };
-
+  // console.log(user);
+  // console.log(token);
+  // req.user = { ...user, token };
+  // console.log(req.user);
   res.json({
     token,
     user: {
@@ -55,6 +54,26 @@ const loginController = async (req, res) => {
     },
   });
 };
+
+const updateController = async (req, res) => {
+  if (req.file) {
+    req.user._doc.avatar = req.file.path;
+  }
+  if (req.body) {
+    for (let key in req.body) {
+      req.user._doc[key] = req.body[key];
+    }
+    console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}", req.user);
+  }
+
+  res.sendStatus(200);
+};
+
+const currentController = (req, res) => {
+  const { email } = req.user._doc;
+  res.json({ email });
+};
+
 
 const logoutController = (req, res) => {
   req.headers.authorization = "";
@@ -65,5 +84,7 @@ const logoutController = (req, res) => {
 module.exports = {
   registerController,
   loginController,
+  updateController,
+  currentController,
   logoutController,
 };
