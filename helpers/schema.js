@@ -2,7 +2,7 @@ const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 
 // USER MONGOOSE SCHEMA
-const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const emailRegexp = /^\w+([-.\w]+)*@\w+([-.\w]+)*\.\w{2,3}$/;
 const passwordRegexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
 const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
 const phoneNumberRegexp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
@@ -217,19 +217,24 @@ const addPetJOISchema = Joi.object({
     "string.base": `"breed" must be string`,
   }),
   sex: Joi.string()
-    .pattern("sell", "lost-found", "for-free", Joi.required())
-    .valid("male", "female"),
+    .valid("male", "female")
+    .required(),
   location: Joi.string()
-    .pattern("sell", "lost-found", "for-free", Joi.required())
+    .valid("sell", "lost-found", "for-free")
+    .required()
     .messages({
       "string.empty": `"location" cannot be empty`,
       "string.base": `"location" must be string`,
     }),
-  price: Joi.number().min(0).pattern("sell", Joi.required()).messages({
-    "any.required": `"price" is required`,
-    "number.empty": `"price" cannot be empty`,
-    "number.base": `"price" must be number`,
-  }),
+  price: Joi.number()
+    .min(0)
+    .required()
+    .messages({
+      "any.required": `"price" is required`,
+      "number.empty": `"price" cannot be empty`,
+      "number.base": `"price" must be number`,
+    }),
+
   comments: Joi.string().min(8).max(120),
 });
 
