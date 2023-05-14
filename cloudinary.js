@@ -20,6 +20,16 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const uploadCloud = multer({ storage });
+const storageSecond = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "notice",
+  allowedFormats: ["jpg", "png"],
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
-module.exports = { uploadCloud, cloudinary };
+const uploadCloud = multer({ storage });
+const uploadCloudSecond = multer({ storage: storageSecond });
+
+module.exports = { uploadCloud, cloudinary, uploadCloudSecond };
