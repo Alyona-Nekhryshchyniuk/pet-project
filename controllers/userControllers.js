@@ -23,8 +23,10 @@ const registerController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
+
   const { error } = userJOISchema.validate(req.body);
   if (error) throw ErrorHandler(400, error.message);
+
 
   const { email, password } = req.body;
   const user = await loginUser(email);
