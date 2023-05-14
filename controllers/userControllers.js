@@ -31,8 +31,8 @@ const registerController = async (req, res) => {
 
 const loginController = async (req, res) => {
   // в req.body {email: ***, password:***}
-  const { error } = userJOISchema.validate(req.body);
-  if (error) throw ErrorHandler(400, error.message);
+  // const { error } = userJOISchema.validate(req.body);
+  // if (error) throw ErrorHandler(400, error.message);
 
   const { email, password } = req.body;
   const user = await findUserByMail(email);
@@ -73,7 +73,6 @@ const currentController = (req, res) => {
   const { email } = req.user._doc;
   res.json({ email });
 };
-
 
 const logoutController = (req, res) => {
   req.headers.authorization = "";

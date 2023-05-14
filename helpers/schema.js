@@ -1,249 +1,106 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
-
+const bcrypt = require("bcrypt");
 // USER MONGOOSE SCHEMA
-const emailRegexp = /^\w+([-.\w]+)*@\w+([-.\w]+)*\.\w{2,3}$/;
-const passwordRegexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
-const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
-const phoneNumberRegexp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-
-
-const handleMongooseError = (error, data, next) => {
-  const { name, code } = error;
-  error.status = name === "MongoServerError" && code === 11000 ? 409 : 400;
-  next();
-};
-
-
+const emailRegexp = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/;
+const passwordRegexp = /(?=.*\d)\w{3,20}$/;
+const phoneNumberRegexp = /(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?/;
+const birthdayRegexp =
+  /^(0[1-9]|[12][0-9]|3[01])\.[0-1][0-9]\.(20[0-1][0-9]|19[0-9][0-9])$/;
 const userSchema = new Schema(
   {
     password: {
       type: String,
-      required: [true, "Password is required"],
       minLength: 6,
       maxLength: 16,
-      match: [passwordRegexp, "Please fill a valid password"],
+      match: passwordRegexp,
     },
     email: {
       type: String,
       trim: true,
       lowercase: true,
-      required: [true, "Email address is required"],
       unique: true,
-      match: [emailRegexp, "Please fill a valid email address"],
+      match: [emailRegexp, "Please fill a valid email"],
     },
     name: {
       type: String,
-      required: true,
     },
     birthday: {
-      type: Date,
-      required: true,
+      type: String,
+      match: [birthdayRegexp, "Please fill a valid birthday"],
     },
     city: {
       type: String,
-      required: true,
     },
-    mobilePhone: {
+    phone: {
       type: String,
-      required: true,
       match: [phoneNumberRegexp, "Please fill a valid phone number"],
     },
-
-    token: {
+    avatar: {
       type: String,
-      default: "",
-    },
-    avatarURL: {
-      type: String,
-      required: true,
     },
     verify: {
       type: Boolean,
       default: false,
     },
-    verificationToken: {
-      type: String,
-      required: [true, "Verify token is required"],
-    },
   },
   { versionKey: false, timestamps: true }
 );
-
-userSchema.post("save", handleMongooseError);
-
+// document middleware with password hashing
+userSchema.pre("save", async function () {
+  this.password = await bcrypt.hash(this.password, 10);
+});
 const User = model("user", userSchema);
-
-const addPetSchema = new Schema(
-  {
-    category: {
-      type: String,
-      required: true,
-      enum: ["my pet", "sell", "lost-found", "for-free"],
-      default: "sell",
-    },
-    name: {
-      type: String,
-      required: true,
-      minLength: 2,
-      maxLength: 16,
-      match: [textRegexp, "Please fill name"],
-    },
-    date: {
-      type: Date,
-      required: true,
-    },
-    breed: {
-      type: String,
-      required: true,
-      minLength: 2,
-      maxLength: 16,
-      match: [textRegexp, "Please fill breed"],
-    },
-    sex: {
-      type: String,
-      enum: ["male", "female"],
-      required: function (category) {
-        if (
-          category === "sell" ||
-          category === "lost-found" ||
-          category === "for-free"
-        ) {
-          return true;
-        }
-      },
-    },
-    location: {
-      type: String,
-      required: function (category) {
-        if (
-          category === "sell" ||
-          category === "lost-found" ||
-          category === "for-free"
-        ) {
-          return true;
-        }
-      },
-    },
-    price: {
-      type: Number,
-      min: 0,
-      required: function (category) {
-        if (category === "sell") {
-          return true;
-        }
-      },
-    },
-    comments: {
-      type: String,
-      required: false,
-      minlength: 8,
-      maxlength: 120,
-    },
-    petAvatarURL: String,
-  },
-  { versionKey: false, timestamps: true }
-);
-
-addPetSchema.post("save", handleMongooseError);
-
-const Pet = model("pet", addPetSchema);
-
 // // =======================================================================================
 // // JOI SCHEMAS
-const registerSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).max(16).pattern(passwordRegexp).required(),
-});
-
-const loginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).max(16).pattern(passwordRegexp).required(),
-});
-
-const emailSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-});
-
+const emailMessages = {
+  "any.required": `Missing required "email" field`,
+  "string.empty": `"email" cannot be an empty field`,
+  "string.email": `"email" must be a valid email`,
+};
 const userJOISchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .required()
     .pattern(emailRegexp)
+    .messages(emailMessages),
+  password: Joi.string()
+    .min(6)
+    .max(16)
+    .pattern(passwordRegexp)
     .required()
     .messages({
-      "any.required": `Missing required "email" field`,
-      "string.empty": `"email" cannot be an empty field`,
-      "string.email": `"email" must be a valid email`,
+      "any.required": `Missing required "password" field`,
+      "string.min": `"password" should have a minimum length of "6"`,
+      "string.max": `"password" length must be less than or equal to "16" characters long`,
+      "string.empty": `"password" cannot be an empty field`,
+      "string.pattern.base": `"password" field must contain minimum 6 characters, maximum 16, at least 1 uppercase letter, 1 lowercase letter and 1 digit with no symbols`,
     }),
-  name: Joi.string().required().messages({
-    "any.required": `"name" is required`,
+});
+const userUpdateJOISchema = Joi.object({
+  avatar: Joi.string(),
+  email: Joi.string()
+    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+    .pattern(emailRegexp)
+    .messages(emailMessages),
+  name: Joi.string().messages({
     "string.empty": `"name" cannot be empty`,
     "string.base": `"name" must be string`,
   }),
-  birthday: Joi.date().required().messages({
-    "any.required": `"birthday" is required`,
+  birthday: Joi.string().pattern(birthdayRegexp).messages({
     "date.empty": `"birthday" cannot be empty`,
-    "date.base": `"birthday" must be date`,
   }),
-  city: Joi.string().required().messages({
-    "any.required": `"city" is required`,
+  city: Joi.string().messages({
     "string.empty": `"city" cannot be empty`,
     "string.base": `"city" must be string`,
   }),
-  mobilePhone: Joi.string().pattern(phoneNumberRegexp).required().messages({
-    "any.required": `"phone" is required`,
+  phone: Joi.string().pattern(phoneNumberRegexp).messages({
     "string.empty": `"phone" cannot be empty`,
-    "string.base": `"phone" must be string`,
+    "string.pattern.base": `"phone" has not enough numbers or includes forbidden symbols `,
   }),
 });
-
-const addPetJOISchema = Joi.object({
-  category: Joi.string()
-    .valid("my pet", "sell", "lost-found", "for-free")
-    .required(),
-  name: Joi.string().min(2).max(16).pattern(textRegexp).required().messages({
-    "any.required": `"name" is required`,
-    "string.empty": `"name" cannot be empty`,
-    "string.base": `"name" must be string`,
-  }),
-  date: Joi.date().required().messages({
-    "any.required": `"date" is required`,
-    "date.empty": `"date" cannot be empty`,
-    "date.base": `"date" must be date`,
-  }),
-  breed: Joi.string().min(2).max(16).pattern(textRegexp).required().messages({
-    "any.required": `"breed" is required`,
-    "string.empty": `"breed" cannot be empty`,
-    "string.base": `"breed" must be string`,
-  }),
-  sex: Joi.string()
-    .valid("male", "female")
-    .required(),
-  location: Joi.string()
-    .valid("sell", "lost-found", "for-free")
-    .required()
-    .messages({
-      "string.empty": `"location" cannot be empty`,
-      "string.base": `"location" must be string`,
-    }),
-  price: Joi.number()
-    .min(0)
-    .required()
-    .messages({
-      "any.required": `"price" is required`,
-      "number.empty": `"price" cannot be empty`,
-      "number.base": `"price" must be number`,
-    }),
-
-  comments: Joi.string().min(8).max(120),
-});
-
 module.exports = {
-  registerSchema,
-  loginSchema,
-  emailSchema,
   userJOISchema,
-  addPetJOISchema,
+  userUpdateJOISchema,
   User,
-  Pet,
 };
