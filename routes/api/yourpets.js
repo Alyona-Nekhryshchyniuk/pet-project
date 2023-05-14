@@ -12,7 +12,7 @@ const { validateBody } = require("../../helpers/validateBody");
 
 const { petJOISchema } = require("../../helpers/petShema");
 
-const { uploadCloud } = require("../../cloudinary");
+const { uploadCloudThird } = require("../../cloudinary");
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.get("/", isTokenValidMiddleware, ctrl.listYourPets);
 
 router.post(
   "/",
-  uploadCloud.single("petsAvatar"),
+  uploadCloudThird.single("petsAvatar"),
   isTokenValidMiddleware,
   validateBody(petJOISchema),
   ctrl.addPet
