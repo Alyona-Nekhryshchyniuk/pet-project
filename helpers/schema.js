@@ -1,12 +1,14 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+
 // USER MONGOOSE SCHEMA
 const emailRegexp = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/;
 const passwordRegexp = /(?=.*\d)\w{3,20}$/;
 const phoneNumberRegexp = /(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?/;
 const birthdayRegexp =
   /^(0[1-9]|[12][0-9]|3[01])\.[0-1][0-9]\.(20[0-1][0-9]|19[0-9][0-9])$/;
+
 const userSchema = new Schema(
   {
     password: {
@@ -36,6 +38,7 @@ const userSchema = new Schema(
       type: String,
       match: [phoneNumberRegexp, "Please fill a valid phone number"],
     },
+
     avatar: {
       type: String,
     },
@@ -46,18 +49,24 @@ const userSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
+
 // document middleware with password hashing
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
+
+
 const User = model("user", userSchema);
+
 // // =======================================================================================
 // // JOI SCHEMAS
+
 const emailMessages = {
   "any.required": `Missing required "email" field`,
   "string.empty": `"email" cannot be an empty field`,
   "string.email": `"email" must be a valid email`,
 };
+
 const userJOISchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
@@ -77,6 +86,7 @@ const userJOISchema = Joi.object({
       "string.pattern.base": `"password" field must contain minimum 6 characters, maximum 16, at least 1 uppercase letter, 1 lowercase letter and 1 digit with no symbols`,
     }),
 });
+
 const userUpdateJOISchema = Joi.object({
   avatar: Joi.string(),
   email: Joi.string()
@@ -99,8 +109,11 @@ const userUpdateJOISchema = Joi.object({
     "string.pattern.base": `"phone" has not enough numbers or includes forbidden symbols `,
   }),
 });
+
 module.exports = {
   userJOISchema,
   userUpdateJOISchema,
   User,
+
 };
+
