@@ -20,10 +20,13 @@ router.get(
   isTokenValidMiddleware(tryCatchMiddleware(currentController))
 );
 
-router.post("/logout", tryCatchMiddleware(logoutController));
+router.post(
+  "/logout",
+  isTokenValidMiddleware(tryCatchMiddleware(logoutController))
+);
 
 router.patch(
-  "/update",
+  "/update/:id",
   uploadCloud.single("avatar"),
   isTokenValidMiddleware(tryCatchMiddleware(updateController))
 );
