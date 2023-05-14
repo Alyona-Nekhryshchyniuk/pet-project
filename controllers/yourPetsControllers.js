@@ -1,6 +1,6 @@
 const { tryCatchMiddleware } = require("../middlewares/tryCatchMiddleware");
 
-const {Pet} = require("../helpers/schema");
+const {Pet} = require("../helpers/petShema");
 
 const { ErroHandler } = require("../helpers/ErrorHandler");
 
@@ -12,19 +12,19 @@ const listYourPets = async (req, res) => {
     res.json(result);
 }
 
-const getPetById = async (req, res) => {
-    const { id } = req.params;
-    // const result = await Contact.findOne({_id: id});
-    const result = await Pet.findById(id);
-    if (!result) {
-        throw ErroHandler(404, `Pet with ${id} not found`);
-    }
-    res.json(result);
-};
+// const getPetById = async (req, res) => {
+//     const { id } = req.params;
+//     // const result = await Contact.findOne({_id: id});
+//     const result = await Pet.findById(id);
+//     if (!result) {
+//         throw ErroHandler(404, `Pet with ${id} not found`);
+//     }
+//     res.json(result);
+// };
 
 const addPet = async (req, res) => {
     const {_id: owner} = req.user;
-    const result = await Pet.create({...req.body, owner});
+    const result = await Pet.create({...req.body, owner, photoURL: req.file.path});
     res.status(201).json(result);
 }
 
@@ -51,7 +51,6 @@ const removePet = async (req, res) => {
 
 module.exports = {
     listYourPets: tryCatchMiddleware(listYourPets),
-    getPetById: tryCatchMiddleware(getPetById),
     addPet: tryCatchMiddleware(addPet),
     updatePet: tryCatchMiddleware(updatePet),
     removePet: tryCatchMiddleware(removePet),

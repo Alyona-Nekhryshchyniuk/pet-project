@@ -3,6 +3,7 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const { authRouter } = require("./routes/api/auth");
+const { yourPetsRouter } = require("./routes/api/yourpets");
 const petsRouter = require("./routes/api/pets");
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.static("public"));
 // app.set("view engine", "ejs");
 
 app.use("/api/auth", authRouter);
+app.use("/api/yourPets", yourPetsRouter);
 app.use("/api/pets", petsRouter);
 
 app.use((error, req, res, next) => {

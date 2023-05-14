@@ -10,20 +10,19 @@ const {
 
 const { validateBody } = require("../../helpers/validateBody");
 
-const { addPetJOISchema } = require("../../helpers/schema");
+const { petJOISchema } = require("../../helpers/petShema");
 
-// const { uploadCloud } = require("../../cloudinary");
+const { uploadCloud } = require("../../cloudinary");
 
 const router = express.Router();
 
 router.get("/", isTokenValidMiddleware, ctrl.listYourPets);
 
-router.get("/:id", isTokenValidMiddleware, isValidId, ctrl.getPetById);
-
 router.post(
   "/",
+  uploadCloud.single("petsAvatar"),
   isTokenValidMiddleware,
-  validateBody(addPetJOISchema),
+  validateBody(petJOISchema),
   ctrl.addPet
 );
 
@@ -31,19 +30,10 @@ router.put(
   "/:id",
   isTokenValidMiddleware,
   isValidId,
-  validateBody(addPetJOISchema),
+  validateBody(petJOISchema),
   ctrl.updatePet
 );
 
-// router.patch(
-//   "/:id/update",
-//   uploadCloud.single("petAvatar"),
-//   isTokenValidMiddleware,
-//   isValidId,
-//   validateBody(addPetJOISchema),
-//   ctrl.updatePet
-// );
-
 router.delete("/:id", isTokenValidMiddleware, isValidId, ctrl.removePet);
 
-module.exports = router;
+module.exports = {yourPetsRouter: router};
