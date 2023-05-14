@@ -4,13 +4,18 @@ const { getUserById } = require("../services/auth");
 
 const isTokenValidMiddleware = (controller) => {
   const func = async (req, res, next) => {
-    const [type, token] = req.headers.authorization.split(" ");
+    let token;
+    let type;
+
+    if (req.headers.authorization) {
+      [type, token] = req.headers.authorization.split(" ");
+    }
+
     try {
       const { _id } = jwt.decode(token, SECRET);
       const user = await getUserById(_id);
-      req.user = { ...user, token };
-      console.log(req.user);
       if (!user) throw new Error();
+      req.user = { user, token };
       await controller(req, res, next);
       next();
     } catch (error) {

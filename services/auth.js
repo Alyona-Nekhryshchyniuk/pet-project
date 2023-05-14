@@ -16,8 +16,8 @@ const registerUser = async ({ email, password }) => {
   return user;
 };
 
-// find By Mail
-const findUserByMail = async (email) => {
+// login
+const loginUser = async (email) => {
   return await User.findOne({ email });
 };
 
@@ -26,8 +26,18 @@ const getUserById = async (_id) => {
   return await User.findById({ _id });
 };
 
+// updateUser
+const updateUser = async (id, objWithUpdatedUserData) => {
+  return await User.findOneAndUpdate(
+    { _id: id },
+    { ...objWithUpdatedUserData },
+    { new: true }
+  );
+};
+
 module.exports = {
   registerUser,
-  findUserByMail,
+  loginUser,
+  updateUser,
   getUserById,
 };
