@@ -8,11 +8,17 @@ const {
   getAllPetsController,
   addNoticeController,
   getNoticeControllerById,
-  getNoticeControllerByTitle,
   deleteNoticeController,
+  getSellPetsController,
+  getLostPetsController,
+  getInGoodHandsPetsController,
 } = require("../../controllers/petsController");
 
 router.get("/", tryCatchMiddleware(getAllPetsController));
+router.get("/sell", tryCatchMiddleware(getSellPetsController));
+router.get("/lost", tryCatchMiddleware(getLostPetsController));
+router.get("/inGoodHands", tryCatchMiddleware(getInGoodHandsPetsController));
+
 router.post(
   "/",
   uploadCloudSecond.single("image"),

@@ -1,16 +1,145 @@
 const ErrorHandler = require("../helpers/ErrorHandler");
-const Notice = require("../models/notice");
+const { Notice, addPetJOISchema } = require("../models/notice");
 
 const getAllPetsController = async (req, res, next) => {
-  console.log(req.query);
-  const pets = await Notice.find();
-  res.json(pets);
+  const { query, gender } = req.query;
+  if (query && gender) {
+    const pets = await Notice.find({ title: query, sex: gender }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+
+  if (query && !gender) {
+    const pets = await Notice.find({ title: query }).sort({ createdAt: -1 });
+    res.json(pets);
+  }
+
+  if (!query && gender) {
+    const pets = await Notice.find({ sex: gender }).sort({ createdAt: -1 });
+    res.json(pets);
+  }
+
+  if (!query && !gender) {
+    const pets = await Notice.find().sort({ createdAt: -1 });
+    res.json(pets);
+  }
+};
+
+const getSellPetsController = async (req, res, next) => {
+  const { query, gender } = req.query;
+  if (query && gender) {
+    const pets = await Notice.find({
+      category: "sell",
+      title: query,
+      sex: gender,
+    }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+  if (query && !gender) {
+    const pets = await Notice.find({
+      category: "sell",
+      title: query,
+    }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+  if (!query && gender) {
+    const pets = await Notice.find({
+      category: "sell",
+      sex: gender,
+    }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+  if (!query && !gender) {
+    const pets = await Notice.find({ category: "sell" }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+};
+
+const getLostPetsController = async (req, res, next) => {
+  const { query, gender } = req.query;
+
+  if (query && gender) {
+    const pets = await Notice.find({
+      category: "lost/found",
+      title: query,
+      sex: gender,
+    });
+    res.json(pets);
+  }
+
+  if (query && !gender) {
+    const pets = await Notice.find({
+      category: "lost/found",
+      title: query,
+    });
+    res.json(pets);
+  }
+
+  if (!query && gender) {
+    const pets = await Notice.find({
+      category: "lost/found",
+      sex: gender,
+    });
+    res.json(pets);
+  }
+
+  if (!query && !gender) {
+    const pets = await Notice.find({ category: "lost/found" }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+};
+
+const getInGoodHandsPetsController = async (req, res, next) => {
+  const { query, gender } = req.query;
+
+  if (query && gender) {
+    const pets = await Notice.find({
+      category: "in good hands",
+      title: query,
+      sex: gender,
+    }).sort({ createdAt: -1 });
+    res.json(pets);
+  }
+
+  if (query && !gender) {
+    const pets = await Notice.find({
+      category: "in good hands",
+      title: query,
+    }).sort({ createdAt: -1 });
+    res.json(pets);
+  }
+
+  if (!query && gender) {
+    const pets = await Notice.find({
+      category: "in good hands",
+      sex: gender,
+    }).sort({ createdAt: -1 });
+    res.json(pets);
+  }
+
+  if (!query && !gender) {
+    const pets = await Notice.find({ category: "in good hands" }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
 };
 
 const addNoticeController = async (req, res, next) => {
-  // const { error } = addPetJOISchema.validate(req.body);
+  const { error } = addPetJOISchema.validate(req.body);
 
-  // if (error) throw ErrorHandler(400, error.message);
+  if (error) throw ErrorHandler(400, error.message);
   const notice = await Notice.create({ ...req.body, image: req.file.path });
   res.status(201).json(notice);
 };
@@ -18,16 +147,6 @@ const addNoticeController = async (req, res, next) => {
 const getNoticeControllerById = async (req, res, next) => {
   const { id } = req.params;
   const result = await Notice.findById(id);
-  if (!result) {
-    throw ErrorHandler(404, "Notice not found");
-  }
-  res.json(result);
-};
-
-const getNoticeControllerByTitle = async (req, res, next) => {
-  const { query } = req.query;
-  console.log(query);
-  const result = await Notice.find({ title: query });
   if (!result) {
     throw ErrorHandler(404, "Notice not found");
   }
@@ -43,14 +162,12 @@ const deleteNoticeController = async (req, res) => {
   res.json({ message: "Notice deleted" });
 };
 
-// const getCatagoryController = async (req, res) => {
-//   const { cate } = req.params;
-// }
-
 module.exports = {
   getAllPetsController,
   addNoticeController,
   getNoticeControllerById,
   deleteNoticeController,
-  getNoticeControllerByTitle,
+  getSellPetsController,
+  getLostPetsController,
+  getInGoodHandsPetsController,
 };

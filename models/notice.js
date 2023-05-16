@@ -1,10 +1,7 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 
-const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const passwordRegexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
 const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
-const phoneNumberRegexp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 
 const handleMongooseError = (error, data, next) => {
   const { name, code } = error;
@@ -17,7 +14,7 @@ const noticeSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ["my pet", "sell", "lost-found", "for-free"],
+      enum: ["my pet", "sell", "lost/found", "in good hands"],
       default: "sell",
     },
     title: {
@@ -47,8 +44,8 @@ const noticeSchema = new Schema(
       required: function (category) {
         if (
           category === "sell" ||
-          category === "lost-found" ||
-          category === "for-free"
+          category === "lost/found" ||
+          category === "in good hands"
         ) {
           return true;
         }
@@ -59,8 +56,8 @@ const noticeSchema = new Schema(
       required: function (category) {
         if (
           category === "sell" ||
-          category === "lost-found" ||
-          category === "for-free"
+          category === "lost/found" ||
+          category === "in good hands"
         ) {
           return true;
         }
@@ -74,6 +71,7 @@ const noticeSchema = new Schema(
           return true;
         }
       },
+      default: 0,
     },
     comments: {
       type: String,
@@ -96,40 +94,38 @@ noticeSchema.post("save", handleMongooseError);
 
 const Notice = model("notice", noticeSchema);
 
-// const addPetJOISchema = Joi.object({
-//   category: Joi.string()
-//     .valid("my pet", "sell", "lost-found", "for-free")
-//     .required(),
-//   name: Joi.string().min(2).max(16).pattern(textRegexp).required().messages({
-//     "any.required": `"name" is required`,
-//     "string.empty": `"name" cannot be empty`,
-//     "string.base": `"name" must be string`,
-//   }),
-//   date: Joi.string().required().messages({
-//     "any.required": `"date" is required`,
-//     "date.empty": `"date" cannot be empty`,
-//     "date.base": `"date" must be date`,
-//   }),
-//   breed: Joi.string().min(2).max(16).pattern(textRegexp).required().messages({
-//     "any.required": `"breed" is required`,
-//     "string.empty": `"breed" cannot be empty`,
-//     "string.base": `"breed" must be string`,
-//   }),
-//   sex: Joi.string()
-//     .pattern("sell", "lost-found", "for-free", Joi.required())
-//     .valid("male", "female"),
-//   location: Joi.string()
-//     .pattern("sell", "lost-found", "for-free", Joi.required())
-//     .messages({
-//       "string.empty": `"location" cannot be empty`,
-//       "string.base": `"location" must be string`,
-//     }),
-//   price: Joi.number().min(0).pattern("sell", Joi.required()).messages({
-//     "any.required": `"price" is required`,
-//     "number.empty": `"price" cannot be empty`,
-//     "number.base": `"price" must be number`,
-//   }),
-//   comments: Joi.string().min(8).max(120),
-// });
+const addPetJOISchema = Joi.object({
+  category: Joi.string()
+    .valid("my pet", "sell", "lost/found", "in good hands")
+    .required(),
+  title: Joi.string().required().messages({
+    "any.required": `"title" is required`,
+    "string.empty": `"title" cannot be empty`,
+    "string.base": `"title" must be string`,
+  }),
+  name: Joi.string().min(2).max(16).pattern(textRegexp).required().messages({
+    "any.required": `"name" is required`,
+    "string.empty": `"name" cannot be empty`,
+    "string.base": `"name" must be string`,
+  }),
+  date: Joi.string().required().messages({
+    "any.required": `"date" is required`,
+    "date.empty": `"date" cannot be empty`,
+    "date.base": `"date" must be date`,
+  }),
+  breed: Joi.string().min(2).max(16).required().messages({
+    "any.required": `"breed" is required`,
+    "string.empty": `"breed" cannot be empty`,
+    "string.base": `"breed" must be string`,
+  }),
+  sex: Joi.string().valid("male", "female").required(),
+  location: Joi.string().required().messages({
+    "string.empty": `"location" cannot be empty`,
+    "string.base": `"location" must be string`,
+  }),
+  price: Joi.any(),
+  comments: Joi.string().min(8).max(120),
+  image: Joi.string(),
+});
 
-module.exports = Notice;
+module.exports = { Notice, addPetJOISchema };
