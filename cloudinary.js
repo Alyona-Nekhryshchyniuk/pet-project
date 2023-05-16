@@ -29,7 +29,17 @@ const storageSecond = new CloudinaryStorage({
   },
 });
 
+const storageThird = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "petsAvatar",
+  allowedFormats: ["jpg", "png"],
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
 const uploadCloud = multer({ storage });
 const uploadCloudSecond = multer({ storage: storageSecond });
+const uploadCloudThird = multer({ storage: storageThird });
 
-module.exports = { uploadCloud, cloudinary, uploadCloudSecond };
+module.exports = { uploadCloud, cloudinary, uploadCloudSecond, uploadCloudThird };

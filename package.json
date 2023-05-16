@@ -21,6 +21,7 @@
     "gravatar": "^1.8.2",
     "jimp": "^0.22.8",
     "joi": "^17.9.2",
+    "@joi/date": "^2.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.1.1",
     "morgan": "1.10.0",
