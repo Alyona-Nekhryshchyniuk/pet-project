@@ -35,7 +35,9 @@ const loginController = async (req, res) => {
   }
   const { _id } = user;
   const { SECRET } = process.env;
+  console.log('Secret: ', SECRET);
   const token = jwt.sign({ _id }, SECRET);
+  console.log('token', token)
 
   res.json({
     token,
@@ -63,7 +65,6 @@ const updateController = async (req, res) => {
       throw ErrorHandler(404, "Not found");
     }
   }
-
   res.json(updatedUser);
 };
 

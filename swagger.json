@@ -156,7 +156,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/updateRequest"
+                                "$ref": "#/components/schemas/userUpdateRequest"
                             }
                         }
                     }
@@ -167,12 +167,10 @@
                 "responses": {
                     "200": {
                         "description": "updated successfully",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "avatarURL": {
-                                    "type": "string",
-                                    "description": "The URL of the updated avatar image"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userUpdateResponse"
                                 }
                             }
                         }
@@ -221,6 +219,289 @@
                     },
                     "401": {
                         "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/pets": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get all pets",
+                "description": "Get all pets",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query for pet title",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Filter pets by gender",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/petResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Add a notice",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/petRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "schema": {
+                                "$ref": "#/components/schemas/petResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500":{
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/pets/sell": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get pets for sale",
+                "description": "Get pets for sale",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query for pet title",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Filter pets by gender",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/petResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/pets/lost": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get lost/found pets",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query for pet title",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Filter pets by gender",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/petResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/pets/inGoodHands": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get pets available for adoption",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query for pet title",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Filter pets by gender",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/petResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "api/pets/{id}": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get a pet by ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the pet",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/petResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pet not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Delete notice by ID",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the notice",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/petResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -297,9 +578,13 @@
                     }
                 }
             },
-            "updateRequest": {
+            "userUpdateRequest": {
                 "type": "object",
                 "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
                     "avatar": {
                         "type": "string",
                         "format": "binary",
@@ -312,8 +597,243 @@
                     "city": {
                         "type": "string",
                         "description": "Update user's city"
+                    },
+                    "birthday": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "pattern": "^[0-9]{10}$"
                     }
                 }
+            },
+            "userUpdateResponse": {
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "birthday": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "verify": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "petResponse": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "my pet",
+                            "sell",
+                            "lost-found",
+                            "for-free"
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "sring",
+                        "format": "date"
+                    },
+                    "breed": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "sex": {
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female"
+                        ],
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "category": {
+                                            "enum": [
+                                                "sell",
+                                                "lost-found",
+                                                "for-free"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "minLength": 1
+                                }
+                            }
+                        ]
+                    },
+                    "location": {
+                        "type": "string",
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "category": {
+                                            "enum": [
+                                                "sell",
+                                                "lost-found",
+                                                "for-free"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "minLength": 1
+                                }
+                            }
+                        ]
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "petRequest": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "my pet",
+                            "sell",
+                            "lost-found",
+                            "for-free"
+                        ],
+                        "default": "sell"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 16,
+                        "pattern": "^.*(?=.*[a-zA-Z]).*$"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 16
+                    },
+                    "sex": {
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female"
+                        ],
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "category": {
+                                            "enum": [
+                                                "sell",
+                                                "lost-found",
+                                                "for-free"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "minLength": 1
+                                }
+                            }
+                        ]
+                    },
+                    "location": {
+                        "type": "string",
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "category": {
+                                            "enum": [
+                                                "sell",
+                                                "lost-found",
+                                                "for-free"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "minLength": 1
+                                }
+                            }
+                        ]
+                    },
+                    "price": {
+                        "type": "number",
+                        "minimum": 0,
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "category": {
+                                            "enum": [
+                                                "sell"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "minimum": 1
+                                }
+                            }
+                        ]
+                    },
+                    "comments": {
+                        "type": "string",
+                        "minLength": 8,
+                        "maxLength": 120
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary",
+                        "x-example": "base64-encoded-image-string"
+                    }
+                },
+                "required": [
+                    "category",
+                    "title",
+                    "name",
+                    "date",
+                    "breed"
+                ]
             }
         },
         "securitySchemes": {
