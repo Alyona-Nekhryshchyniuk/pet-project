@@ -1,5 +1,5 @@
 const ErrorHandler = require("../helpers/ErrorHandler");
-const { Notice, addPetJOISchema } = require("../models/notice");
+const { Notice, addNoticeJOISchema } = require("../models/notice");
 
 const getAllPetsController = async (req, res, next) => {
   const { query, gender } = req.query;
@@ -137,7 +137,7 @@ const getInGoodHandsPetsController = async (req, res, next) => {
 };
 
 const addNoticeController = async (req, res, next) => {
-  const { error } = addPetJOISchema.validate(req.body);
+  const { error } = addNoticeJOISchema.validate(req.body);
 
   if (error) throw ErrorHandler(400, error.message);
   const notice = await Notice.create({ ...req.body, image: req.file.path });

@@ -2,38 +2,34 @@ const express = require("express");
 
 const ctrl = require("../../controllers/yourPetsControllers");
 
-const { isValidId } = require("../../middlewares/isValidId");
+const isValidId = require("../../middlewares/isValidId");
 
-const {
-  isTokenValidMiddleware,
-} = require("../../middlewares/isTokenValidMiddleware");
+const isTokenValidMiddleware = require("../../middlewares/isTokenValidMiddleware");
 
-const { validateBody } = require("../../helpers/validateBody");
+const validateBody = require("../../helpers/validateBody");
 
-const { petJOISchema } = require("../../helpers/petShema");
+const { petJOISchema } = require("../../models/petShema");
 
 const { uploadCloudThird } = require("../../cloudinary");
 
 const router = express.Router();
 
-router.get("/", isTokenValidMiddleware, ctrl.listYourPets);
+router.get("/", isTokenValidMiddleware(ctrl.listYourPets));
 
 router.post(
   "/",
   uploadCloudThird.single("petsAvatar"),
-  isTokenValidMiddleware,
   validateBody(petJOISchema),
-  ctrl.addPet
+  isTokenValidMiddleware(ctrl.addPet)
 );
 
 router.put(
   "/:id",
-  isTokenValidMiddleware,
   isValidId,
   validateBody(petJOISchema),
-  ctrl.updatePet
+  isTokenValidMiddleware(ctrl.updatePet)
 );
 
 router.delete("/:id", isTokenValidMiddleware, isValidId, ctrl.removePet);
 
-module.exports = {yourPetsRouter: router};
+module.exports = { yourPetsRouter: router };

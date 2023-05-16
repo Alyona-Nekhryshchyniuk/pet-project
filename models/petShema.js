@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 // mongoose.set("strictQuery", true);
 
-import BaseJoi from "joi";
-import JoiDate from "@joi/date";
+const BaseJoi = require("joi");
+const JoiDate = require("@joi/date");
+
 const Joi = BaseJoi.extend(JoiDate);
 
 const { Schema, model } = mongoose;
@@ -23,7 +24,7 @@ const petSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
       required: true,
-  },
+    },
     birthDate: {
       type: String,
       required: [true, "Birth date is required"],
@@ -48,9 +49,9 @@ const petSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-export const Pet = model("Pet", petSchema);
+const Pet = model("Pet", petSchema);
 
-export const petJOISchema = Joi.object({
+const petJOISchema = Joi.object({
   name: Joi.string()
     .min(2)
     .max(16)
@@ -79,3 +80,5 @@ export const petJOISchema = Joi.object({
     filename: Joi.string(),
   }).required(),
 });
+
+module.exports = { Pet, petJOISchema };

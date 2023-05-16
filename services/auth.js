@@ -1,4 +1,4 @@
-const { User } = require("../helpers/schema");
+const { User } = require("../models/schema");
 const gravatar = require("gravatar");
 
 // register

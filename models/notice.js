@@ -94,7 +94,7 @@ noticeSchema.post("save", handleMongooseError);
 
 const Notice = model("notice", noticeSchema);
 
-const addPetJOISchema = Joi.object({
+const addNoticeJOISchema = Joi.object({
   category: Joi.string()
     .valid("my pet", "sell", "lost/found", "in good hands")
     .required(),
@@ -128,4 +128,4 @@ const addPetJOISchema = Joi.object({
   image: Joi.string(),
 });
 
-module.exports = { Notice, addPetJOISchema };
+module.exports = { Notice, addNoticeJOISchema };

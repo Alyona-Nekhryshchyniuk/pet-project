@@ -12,7 +12,7 @@ const {
   getSellPetsController,
   getLostPetsController,
   getInGoodHandsPetsController,
-} = require("../../controllers/petsController");
+} = require("../../controllers/noticesController");
 
 router.get("/", tryCatchMiddleware(getAllPetsController));
 router.get("/sell", tryCatchMiddleware(getSellPetsController));
