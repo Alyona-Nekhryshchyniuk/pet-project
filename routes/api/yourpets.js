@@ -34,6 +34,6 @@ router.put(
   isTokenValidMiddleware(ctrl.updatePet)
 );
 
-router.delete("/:id", authentificate, isTokenValidMiddleware, isValidId, ctrl.removePet);
+router.delete("/:id", authentificate, isValidId, isTokenValidMiddleware(ctrl.removePet));
 
 module.exports = { yourPetsRouter: router };
