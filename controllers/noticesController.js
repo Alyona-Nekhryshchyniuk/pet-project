@@ -137,10 +137,15 @@ const getInGoodHandsPetsController = async (req, res, next) => {
 };
 
 const addNoticeController = async (req, res, next) => {
+  const { _id: owner } = req.user;
   const { error } = addNoticeJOISchema.validate(req.body);
 
   if (error) throw ErrorHandler(400, error.message);
-  const notice = await Notice.create({ ...req.body, image: req.file.path });
+  const notice = await Notice.create({
+    ...req.body,
+    image: req.file.path,
+    owner,
+  });
   res.status(201).json(notice);
 };
 
@@ -162,6 +167,14 @@ const deleteNoticeController = async (req, res) => {
   res.json({ message: "Notice deleted" });
 };
 
+const getMyAddsController = async (req, res, next) => {
+  const { id } = req.params;
+  const pets = await Notice.find({ owner: id }).sort({
+    createdAt: -1,
+  });
+  res.json(pets);
+};
+
 module.exports = {
   getAllPetsController,
   addNoticeController,
@@ -170,4 +183,5 @@ module.exports = {
   getSellPetsController,
   getLostPetsController,
   getInGoodHandsPetsController,
+  getMyAddsController,
 };
