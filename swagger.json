@@ -262,8 +262,8 @@
                             }
                         }
                     },
-                    "400":{
-                        "description":"Bad request"
+                    "400": {
+                        "description": "Bad request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -302,7 +302,7 @@
                     "400": {
                         "description": "Bad request"
                     },
-                    "500":{
+                    "500": {
                         "description": "Internal Server Error"
                     }
                 }
@@ -508,6 +508,51 @@
                     }
                 }
             }
+        },
+        "api/notice/myAdds/:id": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Get user adds by ID",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/petResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -644,6 +689,9 @@
             "petResponse": {
                 "type": "object",
                 "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
                     "category": {
                         "type": "string",
                         "enum": [
