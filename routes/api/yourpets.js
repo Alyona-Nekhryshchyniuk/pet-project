@@ -12,12 +12,15 @@ const { petJOISchema } = require("../../models/petShema");
 
 const { uploadCloudThird } = require("../../cloudinary");
 
+const authentificate = require("../../middlewares/authentificate");
+
 const router = express.Router();
 
 router.get("/", isTokenValidMiddleware(ctrl.listYourPets));
 
 router.post(
   "/",
+  authentificate,
   uploadCloudThird.single("petsAvatar"),
   validateBody(petJOISchema),
   isTokenValidMiddleware(ctrl.addPet)
@@ -25,11 +28,12 @@ router.post(
 
 router.put(
   "/:id",
+  authentificate,
   isValidId,
   validateBody(petJOISchema),
   isTokenValidMiddleware(ctrl.updatePet)
 );
 
-router.delete("/:id", isTokenValidMiddleware, isValidId, ctrl.removePet);
+router.delete("/:id", authentificate, isTokenValidMiddleware, isValidId, ctrl.removePet);
 
 module.exports = { yourPetsRouter: router };
