@@ -223,7 +223,7 @@
                 }
             }
         },
-        "/api/pets": {
+        "/api/notice": {
             "get": {
                 "tags": [
                     "Pets"
@@ -261,6 +261,9 @@
                                 }
                             }
                         }
+                    },
+                    "400":{
+                        "description":"Bad request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -305,7 +308,7 @@
                 }
             }
         },
-        "/api/pets/sell": {
+        "/api/notice/sell": {
             "get": {
                 "tags": [
                     "Pets"
@@ -350,7 +353,7 @@
                 }
             }
         },
-        "/api/pets/lost": {
+        "/api/notice/lost": {
             "get": {
                 "tags": [
                     "Pets"
@@ -394,7 +397,7 @@
                 }
             }
         },
-        "/api/pets/inGoodHands": {
+        "/api/notice/inGoodHands": {
             "get": {
                 "tags": [
                     "Pets"
@@ -438,7 +441,7 @@
                 }
             }
         },
-        "api/pets/{id}": {
+        "api/notice/{id}": {
             "get": {
                 "tags": [
                     "Pets"
