@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const  mongoose= require("mongoose");
 const Schema = mongoose.Schema;
 
 const friendsSchema = new Schema(
@@ -29,7 +29,7 @@ const friendsSchema = new Schema(
     email: {
       type: String,
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         "Please enter a valid email address",
       ],
     },
@@ -37,4 +37,6 @@ const friendsSchema = new Schema(
   { versionKey: false }
 );
 
-export const Friends = mongoose.model("Friends", friendsSchema);
+const Friends = mongoose.model("Friends", friendsSchema);
+ 
+module.exports = { Friends }
