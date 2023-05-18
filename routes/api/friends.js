@@ -1,5 +1,5 @@
-import express from "express";
-import { getFriensController } from "../../controllers/friendsController";
+const express =require( "express");
+const { getFriensController } =require( "../../controllers/friendsController");
 
 const tryCatchMiddleware = require("../../middlewares/tryCatchMiddleware");
 

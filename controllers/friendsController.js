@@ -1,6 +1,8 @@
-import { Friends } from "../models/friendsModel";
+const { Friends }= require( "../models/friendsModel");
 
-export const getFriensController = async (req, res) => {
+ const getFriensController = async (req, res) => {
     const result = await Friends.find();
     res.status(200).json(result);
-}
+ }
+
+module.exports = { getFriensController }
