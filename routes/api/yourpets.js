@@ -16,7 +16,7 @@ const authentificate = require("../../middlewares/authentificate");
 
 const router = express.Router();
 
-router.get("/", isTokenValidMiddleware(ctrl.listYourPets));
+router.get("/", authentificate, isTokenValidMiddleware(ctrl.listYourPets));
 
 router.post(
   "/",
