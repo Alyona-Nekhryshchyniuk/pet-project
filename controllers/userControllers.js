@@ -71,7 +71,21 @@ const updateController = async (req, res) => {
       throw ErrorHandler(404, "Not found");
     }
   }
-  res.json(updatedUser);
+
+  // Щоб не повертати приватні дані типу паролю та id, працює навіть якщо такого поля у юзера немає
+  const { email, avatar, name, birthday, phone, city } = updatedUser;
+
+  console.log(updatedUser);
+  res.json({
+    user: {
+      email,
+      avatar,
+      name,
+      birthday,
+      phone,
+      city,
+    },
+  });
 };
 
 const currentController = (req, res, next) => {
