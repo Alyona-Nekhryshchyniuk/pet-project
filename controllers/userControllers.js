@@ -14,8 +14,15 @@ const registerController = async (req, res) => {
   if (!user) throw ErrorHandler(409, "Email in use");
 
   const { email } = user;
+  const { _id } = user;
+
+  const { SECRET } = process.env;
+  console.log("Secret: ", SECRET);
+  const token = jwt.sign({ _id }, SECRET);
+  console.log("token", token);
 
   res.status(201).json({
+    token,
     user: {
       email,
     },
@@ -31,14 +38,8 @@ const loginController = async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw ErrorHandler(401, "Email/password is wrong or email isn't verified");
   }
-  const { _id } = user;
-  const { SECRET } = process.env;
-  console.log("Secret: ", SECRET);
-  const token = jwt.sign({ _id }, SECRET);
-  console.log("token", token);
 
   res.json({
-    token,
     user: {
       email: user.email,
     },
