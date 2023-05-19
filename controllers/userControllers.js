@@ -3,7 +3,6 @@ const ErrorHandler = require("../helpers/ErrorHandler");
 const { userJOISchema, userUpdateJOISchema } = require("../models/schema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-let token;
 
 const registerController = async (req, res) => {
   const { error } = userJOISchema.validate(req.body);
@@ -19,7 +18,7 @@ const registerController = async (req, res) => {
 
   const { SECRET } = process.env;
   console.log("Secret: ", SECRET);
-  token = jwt.sign({ _id }, SECRET);
+  const token = jwt.sign({ _id }, SECRET);
   console.log("token", token);
 
   res.status(201).json({
@@ -36,9 +35,14 @@ const loginController = async (req, res) => {
 
   const { email, password } = req.body;
   const user = await loginUser(email);
+
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw ErrorHandler(401, "Email/password is wrong or email isn't verified");
   }
+
+  const { _id } = user;
+  const { SECRET } = process.env;
+  const token = jwt.sign({ _id }, SECRET);
 
   res.json({
     token,

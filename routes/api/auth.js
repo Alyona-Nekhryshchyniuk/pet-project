@@ -13,10 +13,7 @@ const isTokenValidMiddleware = require("../../middlewares/isTokenValidMiddleware
 
 router.post("/register", tryCatchMiddleware(registerController));
 
-router.post(
-  "/login",
-  isTokenValidMiddleware(tryCatchMiddleware(loginController))
-);
+router.post("/login", tryCatchMiddleware(loginController));
 
 router.get(
   "/current",
