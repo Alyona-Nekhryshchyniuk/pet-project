@@ -3,6 +3,7 @@ const ErrorHandler = require("../helpers/ErrorHandler");
 const { userJOISchema, userUpdateJOISchema } = require("../models/schema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+let token;
 
 const registerController = async (req, res) => {
   const { error } = userJOISchema.validate(req.body);
@@ -18,7 +19,7 @@ const registerController = async (req, res) => {
 
   const { SECRET } = process.env;
   console.log("Secret: ", SECRET);
-  const token = jwt.sign({ _id }, SECRET);
+  token = jwt.sign({ _id }, SECRET);
   console.log("token", token);
 
   res.status(201).json({
@@ -40,6 +41,7 @@ const loginController = async (req, res) => {
   }
 
   res.json({
+    token,
     user: {
       email: user.email,
     },
