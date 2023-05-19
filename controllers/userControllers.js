@@ -89,8 +89,15 @@ const updateController = async (req, res) => {
 };
 
 const currentController = (req, res, next) => {
-  const { email } = req.user.user;
-  res.json({ email });
+  const { email, avatar, name, birthday, phone, city } = req.user.user;
+  res.json({
+    email,
+    avatar,
+    name,
+    birthday,
+    phone,
+    city,
+  });
 };
 
 const logoutController = (req, res) => {
