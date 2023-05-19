@@ -3,6 +3,10 @@ const router = express.Router();
 const tryCatchMiddleware = require("../../middlewares/tryCatchMiddleware");
 const { uploadCloudSecond } = require("../../cloudinary");
 const authentificate = require("../../middlewares/authentificate");
+const ctrl = require("../../controllers/favoriteNoticesController");
+const isValidId = require("../../middlewares/isValidId");
+const isTokenValidMiddleware = require("../../middlewares/isTokenValidMiddleware");
+
 
 const {
   getAllPetsController,
@@ -32,6 +36,24 @@ router.delete(
   "/:id",
   authentificate,
   tryCatchMiddleware(deleteNoticeController)
+);
+
+router.post(
+  "/favorites/:id",
+  authentificate,
+  isValidId,
+  isTokenValidMiddleware(ctrl.addToFavoriteController)
+);
+router.get(
+  "/favorites",
+  authentificate,
+  isTokenValidMiddleware(ctrl.getFavoritesController)
+);
+router.delete(
+  "/favorites/:id",
+  authentificate,
+  isValidId,
+  isTokenValidMiddleware(ctrl.removeFromFavoritesController)
 );
 
 module.exports = router;
