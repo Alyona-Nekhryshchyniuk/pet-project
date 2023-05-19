@@ -53,10 +53,11 @@ const loginController = async (req, res) => {
 };
 
 const updateController = async (req, res) => {
+  const { _id } = req.user.user;
   let updatedUser;
 
   if (req.file) {
-    updatedUser = await updateUser(req.params.id, {
+    updatedUser = await updateUser(_id, {
       avatar: req.file.path,
     });
   }
@@ -65,7 +66,7 @@ const updateController = async (req, res) => {
     const { error } = userUpdateJOISchema.validate(req.body);
     if (error) throw ErrorHandler(400, error.message);
 
-    updatedUser = await updateUser(req.params.id, req.body);
+    updatedUser = await updateUser(_id, req.body);
     if (!updatedUser) {
       throw ErrorHandler(404, "Not found");
     }
