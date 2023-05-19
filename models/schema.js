@@ -46,7 +46,13 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-  },
+    favoriteNotices: 
+      {
+        type: Schema.ObjectId,
+        ref: "notice",
+        default: [],
+      },
+},
   { versionKey: false, timestamps: true }
 );
 
