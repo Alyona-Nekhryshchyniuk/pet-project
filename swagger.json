@@ -27,8 +27,8 @@
             "description": "Authorization endpoints"
         },
         {
-            "name": "Pets",
-            "description": "Pets endpoints"
+            "name": "Notice",
+            "description": "Notice endpoints"
         }
     ],
     "paths": {
@@ -226,10 +226,10 @@
         "/api/notice": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Get all pets",
-                "description": "Get all pets",
+                "summary": "Get all Notice",
+                "description": "Get all Notice",
                 "parameters": [
                     {
                         "name": "query",
@@ -242,7 +242,7 @@
                     {
                         "name": "gender",
                         "in": "query",
-                        "description": "Filter pets by gender",
+                        "description": "Filter Notice by gender",
                         "schema": {
                             "type": "string"
                         }
@@ -256,7 +256,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/petResponse"
+                                        "$ref": "#/components/schemas/noticeResponse"
                                     }
                                 }
                             }
@@ -272,9 +272,9 @@
             },
             "post": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Add a notice",
+                "summary": "Add a new notice",
                 "security": [
                     {
                         "Bearer": []
@@ -285,7 +285,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/petRequest"
+                                "$ref": "#/components/schemas/noticeRequest"
                             }
                         }
                     }
@@ -295,7 +295,7 @@
                         "description": "Created",
                         "content": {
                             "schema": {
-                                "$ref": "#/components/schemas/petResponse"
+                                "$ref": "#/components/schemas/noticeResponse"
                             }
                         }
                     },
@@ -311,10 +311,10 @@
         "/api/notice/sell": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Get pets for sale",
-                "description": "Get pets for sale",
+                "summary": "Get Notice for sale",
+                "description": "Get Notice for sale",
                 "parameters": [
                     {
                         "name": "query",
@@ -327,7 +327,7 @@
                     {
                         "name": "gender",
                         "in": "query",
-                        "description": "Filter pets by gender",
+                        "description": "Filter Notice by gender",
                         "schema": {
                             "type": "string"
                         }
@@ -341,7 +341,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/petResponse"
+                                        "$ref": "#/components/schemas/noticeResponse"
                                     }
                                 }
                             }
@@ -356,9 +356,9 @@
         "/api/notice/lost": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Get lost/found pets",
+                "summary": "Get lost/found Notice",
                 "parameters": [
                     {
                         "name": "query",
@@ -371,7 +371,7 @@
                     {
                         "name": "gender",
                         "in": "query",
-                        "description": "Filter pets by gender",
+                        "description": "Filter Notice by gender",
                         "schema": {
                             "type": "string"
                         }
@@ -385,7 +385,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/petResponse"
+                                        "$ref": "#/components/schemas/noticeResponse"
                                     }
                                 }
                             }
@@ -400,9 +400,9 @@
         "/api/notice/inGoodHands": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Get pets available for adoption",
+                "summary": "Get Notice available for adoption",
                 "parameters": [
                     {
                         "name": "query",
@@ -415,7 +415,7 @@
                     {
                         "name": "gender",
                         "in": "query",
-                        "description": "Filter pets by gender",
+                        "description": "Filter Notice by gender",
                         "schema": {
                             "type": "string"
                         }
@@ -429,7 +429,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/petResponse"
+                                        "$ref": "#/components/schemas/noticeResponse"
                                     }
                                 }
                             }
@@ -441,17 +441,17 @@
                 }
             }
         },
-        "api/notice/{id}": {
+        "/api/notice/{id}": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
-                "summary": "Get a pet by ID",
+                "summary": "Get a notice by ID",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the pet",
+                        "description": "ID of the notice",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -464,7 +464,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/petResponse"
+                                    "$ref": "#/components/schemas/noticeResponse"
                                 }
                             }
                         }
@@ -476,7 +476,7 @@
             },
             "delete": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
                 "summary": "Delete notice by ID",
                 "security": [
@@ -501,7 +501,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/petResponse"
+                                    "$ref": "#/components/schemas/noticeResponse"
                                 }
                             }
                         }
@@ -509,10 +509,10 @@
                 }
             }
         },
-        "api/notice/myAdds/:id": {
+        "/api/notice/myAdds/:id": {
             "get": {
                 "tags": [
-                    "Pets"
+                    "Notice"
                 ],
                 "summary": "Get user adds by ID",
                 "security": [
@@ -539,7 +539,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/petResponse"
+                                        "$ref": "#/components/schemas/noticeResponse"
                                     }
                                 }
                             }
@@ -551,6 +551,58 @@
                     "409": {
                         "description": "Conflict"
                     }
+                }
+            }
+        },
+        "/api/notice/favorites": {
+            "get": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Get favorite notices",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        },
+                        "description":"Page number for pagination"
+                    },
+                    {
+                        "in":"query",
+                        "name":"limit",
+                        "schema":{
+                            "type":"integer",
+                            "default":12
+                        }, 
+                        "description":"Number of items per page"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"A list of favorite notices",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"array",
+                                    "items":{
+                                        "$ref":"#/components/schemas/noticeResponse"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized"
+                    },
+                    "500":"Internal Server Error"
                 }
             }
         }
@@ -584,11 +636,10 @@
                         "description": "User's email",
                         "format": "email"
                     },
-                    "userID": {
+                    "token": {
                         "type": "string",
-                        "description": "User's id",
-                        "format": "nanoid",
-                        "example": "645ce52c201bd44a4b70a2a4"
+                        "description": "Access token for authorized requests",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMjA0NmRkMzFjY2Q2MjY1NTA3OTJhZiIsImlhdCI6MTYyMzQxNjM0NywiZXhwIjoxNjIzNTAxMTQ3fQ.CivKlNzEKhTGp01LxZlx0ObYgbKj6toQv0ksWLP6mS4"
                     }
                 }
             },
@@ -686,89 +737,7 @@
                     }
                 }
             },
-            "petResponse": {
-                "type": "object",
-                "properties": {
-                    "_id": {
-                        "type": "string"
-                    },
-                    "category": {
-                        "type": "string",
-                        "enum": [
-                            "my pet",
-                            "sell",
-                            "lost-found",
-                            "for-free"
-                        ]
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "date": {
-                        "type": "sring",
-                        "format": "date"
-                    },
-                    "breed": {
-                        "type": "string"
-                    },
-                    "title": {
-                        "type": "string"
-                    },
-                    "sex": {
-                        "type": "string",
-                        "enum": [
-                            "male",
-                            "female"
-                        ],
-                        "nullable": true,
-                        "allOf": [
-                            {
-                                "if": {
-                                    "properties": {
-                                        "category": {
-                                            "enum": [
-                                                "sell",
-                                                "lost-found",
-                                                "for-free"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "then": {
-                                    "minLength": 1
-                                }
-                            }
-                        ]
-                    },
-                    "location": {
-                        "type": "string",
-                        "nullable": true,
-                        "allOf": [
-                            {
-                                "if": {
-                                    "properties": {
-                                        "category": {
-                                            "enum": [
-                                                "sell",
-                                                "lost-found",
-                                                "for-free"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "then": {
-                                    "minLength": 1
-                                }
-                            }
-                        ]
-                    },
-                    "image": {
-                        "type": "string",
-                        "format": "uri"
-                    }
-                }
-            },
-            "petRequest": {
+            "noticeRequest": {
                 "type": "object",
                 "properties": {
                     "category": {
@@ -777,7 +746,7 @@
                             "my pet",
                             "sell",
                             "lost-found",
-                            "for-free"
+                            "in good hands"
                         ],
                         "default": "sell"
                     },
@@ -787,8 +756,7 @@
                     "name": {
                         "type": "string",
                         "minLength": 2,
-                        "maxLength": 16,
-                        "pattern": "^.*(?=.*[a-zA-Z]).*$"
+                        "maxLength": 16
                     },
                     "date": {
                         "type": "string",
@@ -804,68 +772,16 @@
                         "enum": [
                             "male",
                             "female"
-                        ],
-                        "allOf": [
-                            {
-                                "if": {
-                                    "properties": {
-                                        "category": {
-                                            "enum": [
-                                                "sell",
-                                                "lost-found",
-                                                "for-free"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "then": {
-                                    "minLength": 1
-                                }
-                            }
                         ]
                     },
                     "location": {
-                        "type": "string",
-                        "nullable": true,
-                        "allOf": [
-                            {
-                                "if": {
-                                    "properties": {
-                                        "category": {
-                                            "enum": [
-                                                "sell",
-                                                "lost-found",
-                                                "for-free"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "then": {
-                                    "minLength": 1
-                                }
-                            }
-                        ]
+                        "type": "string"          
                     },
                     "price": {
                         "type": "number",
                         "minimum": 0,
                         "nullable": true,
-                        "allOf": [
-                            {
-                                "if": {
-                                    "properties": {
-                                        "category": {
-                                            "enum": [
-                                                "sell"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "then": {
-                                    "minimum": 1
-                                }
-                            }
-                        ]
+                        "format":"float"
                     },
                     "comments": {
                         "type": "string",
@@ -885,7 +801,82 @@
                     "date",
                     "breed"
                 ]
-            }
+            },
+                        "noticeResponse": {
+                            "type": "object",
+                            "properties": {
+                                "_id": {
+                                    "type": "string",
+                                    "description": "The unique identifier for the notice",
+                                    "format": "ObjectId",
+                                    "example": "60a7f734b3c8e207046c3e91"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "enum": [
+                                        "my pet",
+                                        "sell",
+                                        "lost-found",
+                                        "in good hands"
+                                    ],
+                                    "default": "sell"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 16,
+                                    "pattern": "/^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/"
+                                },
+                                "date": {
+                                    "type": "sring",
+                                    "format": "date"
+                                },
+                                "breed": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 16
+                                },
+                                "sex": {
+                                    "type": "string",
+                                    "enum": [
+                                        "male",
+                                        "female"
+                                    ]
+                                },
+                                "location": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "minimum": 0,
+                                    "default": 0
+                                },
+                                "comments": {
+                                    "type": "sring"
+                                },
+                                "image": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "owner": {
+                                    "type": "string",
+                                    "format": "ObjectId",
+                                    "example": "60a7f734b3c8e207046c3e92"
+                                },
+                                "favoriteNotices": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "format": "ObjectId"
+                                    },
+                                    "default": []
+                                }
+                            }
+                        }
         },
         "securitySchemes": {
             "Bearer": {
