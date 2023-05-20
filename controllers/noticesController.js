@@ -15,10 +15,12 @@ const getAllPetsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    // const total = await Notice.find({ title: { $regex: query, $options: "i" }, sex: gender });
-    // const totalNotice = total.length;
-    // console.log(totalNotice);
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      sex: gender,
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (query && !gender) {
@@ -30,7 +32,11 @@ const getAllPetsController = async (req, res, next) => {
         limit,
       }
     ).sort({ createdAt: -1 });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && gender) {
@@ -38,7 +44,11 @@ const getAllPetsController = async (req, res, next) => {
       skip,
       limit,
     }).sort({ createdAt: -1 });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      sex: gender,
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && !gender) {
@@ -48,7 +58,9 @@ const getAllPetsController = async (req, res, next) => {
     }).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({});
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 };
 
@@ -70,7 +82,13 @@ const getSellPetsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      sex: gender,
+      category: "sell",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
   if (query && !gender) {
     const pets = await Notice.find(
@@ -86,7 +104,11 @@ const getSellPetsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i", category: "sell" },
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
   if (!query && gender) {
     const pets = await Notice.find(
@@ -102,7 +124,12 @@ const getSellPetsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      sex: gender,
+      category: "sell",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
   if (!query && !gender) {
     const pets = await Notice.find({ category: "sell" }, "-updatedAt", {
@@ -111,7 +138,9 @@ const getSellPetsController = async (req, res, next) => {
     }).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({ category: "sell" });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 };
 
@@ -132,7 +161,13 @@ const getLostPetsController = async (req, res, next) => {
         limit,
       }
     );
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      sex: gender,
+      category: "lost/found",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (query && !gender) {
@@ -147,7 +182,12 @@ const getLostPetsController = async (req, res, next) => {
         limit,
       }
     );
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      category: "lost/found",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && gender) {
@@ -162,7 +202,12 @@ const getLostPetsController = async (req, res, next) => {
         limit,
       }
     );
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      sex: gender,
+      category: "lost/found",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && !gender) {
@@ -172,7 +217,9 @@ const getLostPetsController = async (req, res, next) => {
     }).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({ category: "lost/found" });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 };
 
@@ -193,7 +240,13 @@ const getInGoodHandsPetsController = async (req, res, next) => {
         limit,
       }
     ).sort({ createdAt: -1 });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      sex: gender,
+      category: "in good hands",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (query && !gender) {
@@ -208,7 +261,12 @@ const getInGoodHandsPetsController = async (req, res, next) => {
         limit,
       }
     ).sort({ createdAt: -1 });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      category: "in good hands",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && gender) {
@@ -223,7 +281,12 @@ const getInGoodHandsPetsController = async (req, res, next) => {
         limit,
       }
     ).sort({ createdAt: -1 });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      sex: gender,
+      category: "in good hands",
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && !gender) {
@@ -237,7 +300,9 @@ const getInGoodHandsPetsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({ category: "in good hands" });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 };
 
@@ -288,7 +353,13 @@ const getMyAddsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i" },
+      sex: gender,
+      owner: owner,
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (query && !gender) {
@@ -302,7 +373,11 @@ const getMyAddsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      title: { $regex: query, $options: "i", owner: owner },
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && gender) {
@@ -316,7 +391,12 @@ const getMyAddsController = async (req, res, next) => {
     ).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({
+      sex: gender,
+      owner: owner,
+    });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 
   if (!query && !gender) {
@@ -326,7 +406,9 @@ const getMyAddsController = async (req, res, next) => {
     }).sort({
       createdAt: -1,
     });
-    res.json(pets);
+    const totalNotice = await Notice.find({ owner: owner });
+    const total = totalNotice.length;
+    res.json({ pets, total });
   }
 };
 
