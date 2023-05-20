@@ -24,6 +24,7 @@ const registerController = async (req, res) => {
   res.status(201).json({
     token,
     user: {
+      id: _id,
       email,
       avatar,
       name,
@@ -89,6 +90,7 @@ const updateController = async (req, res) => {
   console.log(updatedUser);
   res.json({
     user: {
+      id: _id,
       email,
       avatar,
       name,
@@ -100,8 +102,9 @@ const updateController = async (req, res) => {
 };
 
 const currentController = (req, res, next) => {
-  const { email, avatar, name, birthday, phone, city } = req.user.user;
+  const { email, avatar, name, birthday, phone, city, _id } = req.user.user;
   res.json({
+    id: _id,
     email,
     avatar,
     name,
