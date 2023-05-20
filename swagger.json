@@ -1008,7 +1008,8 @@
                 "properties": {
                     "email": {
                         "type": "string",
-                        "format": "email"
+                        "format": "email",
+                        "description":"User email"
                     },
                     "avatar": {
                         "type": "string",
@@ -1025,22 +1026,24 @@
                     },
                     "birthday": {
                         "type": "string",
-                        "format": "date"
+                        "format": "date",
+                        "pattern": "^(0[1-9]|[12][0-9]|3[01])\\.[0-1][0-9]\\.(20[0-1][0-9]|19[0-9][0-9])$",
+                        "example": "01.01.1990"
                     },
                     "phone": {
                         "type": "string",
-                        "pattern": "^[0-9]{10}$"
+                        "pattern": "^[0-9]{10}$",
+                        "description": "User phone number",
+                        "example": "1234567890"
                     }
                 }
             },
             "userUpdateResponse": {
                 "type": "object",
                 "properties": {
-                    "password": {
-                        "type": "string"
-                    },
                     "email": {
-                        "type": "string"
+                        "type": "string",
+                        "format":"email"
                     },
                     "name": {
                         "type": "string"
@@ -1057,9 +1060,6 @@
                     },
                     "avatar": {
                         "type": "string"
-                    },
-                    "verify": {
-                        "type": "boolean"
                     }
                 }
             },
