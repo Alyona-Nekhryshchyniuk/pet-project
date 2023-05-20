@@ -37,7 +37,7 @@ const addToFavoriteController = async (req, res) => {
 
 const getFavoritesController = async (req, res) => {
   const { _id: owner } = req.user.user;
-  const { page = 1, limit = 12, search } = req.query;
+  const { page = 1, limit = 12, query } = req.query;
   const skip = (page - 1) * limit;
 
   // const user = await User.findOne({ _id: owner }).populate({
@@ -51,7 +51,7 @@ const getFavoritesController = async (req, res) => {
 
   const userDataWithNotices = await User.findOne({ _id: owner }).populate({
     path: "favoriteNotices",
-    match: { title: { $regex: new RegExp(search, "i") } },
+    match: { title: { $regex: new RegExp(query, "i") } },
     options: {
       select: "-createdAt -updatedAt",
       skip: Number(skip),
