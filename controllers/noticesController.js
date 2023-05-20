@@ -2,62 +2,109 @@ const ErrorHandler = require("../helpers/ErrorHandler");
 const { Notice, addNoticeJOISchema } = require("../models/notice");
 
 const getAllPetsController = async (req, res, next) => {
-  const { query, gender } = req.query;
+  const { query, gender, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
   if (query && gender) {
-    const pets = await Notice.find({ title: query, sex: gender }).sort({
+    const pets = await Notice.find(
+      { title: query, sex: gender },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
       createdAt: -1,
     });
+    // const total = await Notice.find({ title: query, sex: gender });
+    // const totalNotice = total.length;
+    // console.log(totalNotice);
     res.json(pets);
   }
 
   if (query && !gender) {
-    const pets = await Notice.find({ title: query }).sort({ createdAt: -1 });
+    const pets = await Notice.find({ title: query }, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({ createdAt: -1 });
     res.json(pets);
   }
 
   if (!query && gender) {
-    const pets = await Notice.find({ sex: gender }).sort({ createdAt: -1 });
+    const pets = await Notice.find({ sex: gender }, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({ createdAt: -1 });
     res.json(pets);
   }
 
   if (!query && !gender) {
-    const pets = await Notice.find().sort({ createdAt: -1 });
+    const pets = await Notice.find({}, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({
+      createdAt: -1,
+    });
     res.json(pets);
   }
 };
 
 const getSellPetsController = async (req, res, next) => {
-  const { query, gender } = req.query;
+  const { query, gender, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
   if (query && gender) {
-    const pets = await Notice.find({
-      category: "sell",
-      title: query,
-      sex: gender,
-    }).sort({
+    const pets = await Notice.find(
+      {
+        category: "sell",
+        title: query,
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
       createdAt: -1,
     });
     res.json(pets);
   }
   if (query && !gender) {
-    const pets = await Notice.find({
-      category: "sell",
-      title: query,
-    }).sort({
+    const pets = await Notice.find(
+      {
+        category: "sell",
+        title: query,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
       createdAt: -1,
     });
     res.json(pets);
   }
   if (!query && gender) {
-    const pets = await Notice.find({
-      category: "sell",
-      sex: gender,
-    }).sort({
+    const pets = await Notice.find(
+      {
+        category: "sell",
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
       createdAt: -1,
     });
     res.json(pets);
   }
   if (!query && !gender) {
-    const pets = await Notice.find({ category: "sell" }).sort({
+    const pets = await Notice.find({ category: "sell" }, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({
       createdAt: -1,
     });
     res.json(pets);
@@ -65,35 +112,60 @@ const getSellPetsController = async (req, res, next) => {
 };
 
 const getLostPetsController = async (req, res, next) => {
-  const { query, gender } = req.query;
+  const { query, gender, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
 
   if (query && gender) {
-    const pets = await Notice.find({
-      category: "lost/found",
-      title: query,
-      sex: gender,
-    });
+    const pets = await Notice.find(
+      {
+        category: "lost/found",
+        title: query,
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    );
     res.json(pets);
   }
 
   if (query && !gender) {
-    const pets = await Notice.find({
-      category: "lost/found",
-      title: query,
-    });
+    const pets = await Notice.find(
+      {
+        category: "lost/found",
+        title: query,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    );
     res.json(pets);
   }
 
   if (!query && gender) {
-    const pets = await Notice.find({
-      category: "lost/found",
-      sex: gender,
-    });
+    const pets = await Notice.find(
+      {
+        category: "lost/found",
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    );
     res.json(pets);
   }
 
   if (!query && !gender) {
-    const pets = await Notice.find({ category: "lost/found" }).sort({
+    const pets = await Notice.find({ category: "lost/found" }, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({
       createdAt: -1,
     });
     res.json(pets);
@@ -101,35 +173,64 @@ const getLostPetsController = async (req, res, next) => {
 };
 
 const getInGoodHandsPetsController = async (req, res, next) => {
-  const { query, gender } = req.query;
+  const { query, gender, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
 
   if (query && gender) {
-    const pets = await Notice.find({
-      category: "in good hands",
-      title: query,
-      sex: gender,
-    }).sort({ createdAt: -1 });
+    const pets = await Notice.find(
+      {
+        category: "in good hands",
+        title: query,
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({ createdAt: -1 });
     res.json(pets);
   }
 
   if (query && !gender) {
-    const pets = await Notice.find({
-      category: "in good hands",
-      title: query,
-    }).sort({ createdAt: -1 });
+    const pets = await Notice.find(
+      {
+        category: "in good hands",
+        title: query,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({ createdAt: -1 });
     res.json(pets);
   }
 
   if (!query && gender) {
-    const pets = await Notice.find({
-      category: "in good hands",
-      sex: gender,
-    }).sort({ createdAt: -1 });
+    const pets = await Notice.find(
+      {
+        category: "in good hands",
+        sex: gender,
+      },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({ createdAt: -1 });
     res.json(pets);
   }
 
   if (!query && !gender) {
-    const pets = await Notice.find({ category: "in good hands" }).sort({
+    const pets = await Notice.find(
+      { category: "in good hands" },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
       createdAt: -1,
     });
     res.json(pets);
@@ -168,11 +269,61 @@ const deleteNoticeController = async (req, res) => {
 };
 
 const getMyAddsController = async (req, res, next) => {
-  const { id } = req.params;
-  const pets = await Notice.find({ owner: id }).sort({
-    createdAt: -1,
-  });
-  res.json(pets);
+  const { _id: owner } = req.user;
+  const { query, gender, page = 1, limit = 12 } = req.query;
+  const skip = (page - 1) * limit;
+
+  if (query && gender) {
+    const pets = await Notice.find(
+      { owner: owner, title: query, sex: gender },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+
+  if (query && !gender) {
+    const pets = await Notice.find(
+      { owner: owner, title: query },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+
+  if (!query && gender) {
+    const pets = await Notice.find(
+      { owner: owner, sex: gender },
+      "-updatedAt",
+      {
+        skip,
+        limit,
+      }
+    ).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
+
+  if (!query && !gender) {
+    const pets = await Notice.find({ owner: owner }, "-updatedAt", {
+      skip,
+      limit,
+    }).sort({
+      createdAt: -1,
+    });
+    res.json(pets);
+  }
 };
 
 module.exports = {

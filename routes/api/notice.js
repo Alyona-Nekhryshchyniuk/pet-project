@@ -7,7 +7,6 @@ const ctrl = require("../../controllers/favoriteNoticesController");
 const isValidId = require("../../middlewares/isValidId");
 const isTokenValidMiddleware = require("../../middlewares/isTokenValidMiddleware");
 
-
 const {
   getAllPetsController,
   addNoticeController,
@@ -23,7 +22,7 @@ router.get("/", tryCatchMiddleware(getAllPetsController));
 router.get("/sell", tryCatchMiddleware(getSellPetsController));
 router.get("/lost", tryCatchMiddleware(getLostPetsController));
 router.get("/inGoodHands", tryCatchMiddleware(getInGoodHandsPetsController));
-router.get("/myAdds/:id", tryCatchMiddleware(getMyAddsController));
+router.get("/myAdds", authentificate, tryCatchMiddleware(getMyAddsController));
 
 router.post(
   "/",
