@@ -13,7 +13,7 @@ const registerController = async (req, res) => {
 
   if (!user) throw ErrorHandler(409, "Email in use");
 
-  const { email } = user;
+  const { email, avatar, name, birthday, phone, city } = user;
   const { _id } = user;
 
   const { SECRET } = process.env;
@@ -25,6 +25,11 @@ const registerController = async (req, res) => {
     token,
     user: {
       email,
+      avatar,
+      name,
+      birthday,
+      phone,
+      city,
     },
   });
 };
@@ -48,6 +53,11 @@ const loginController = async (req, res) => {
     token,
     user: {
       email: user.email,
+      avatar: user.avatar,
+      name: user.name,
+      birthday: user.birthday,
+      phone: user.phone,
+      city: user.city,
     },
   });
 };
