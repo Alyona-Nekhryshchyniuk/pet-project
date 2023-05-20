@@ -26,7 +26,7 @@ router.post(
 );
 
 router.patch(
-  "/update/:id",
+  "/update",
   uploadCloud.single("avatar"),
   isTokenValidMiddleware(tryCatchMiddleware(updateController))
 );

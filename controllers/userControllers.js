@@ -53,10 +53,11 @@ const loginController = async (req, res) => {
 };
 
 const updateController = async (req, res) => {
+  const { _id } = req.user.user;
   let updatedUser;
 
   if (req.file) {
-    updatedUser = await updateUser(req.params.id, {
+    updatedUser = await updateUser(_id, {
       avatar: req.file.path,
     });
   }
@@ -65,17 +66,38 @@ const updateController = async (req, res) => {
     const { error } = userUpdateJOISchema.validate(req.body);
     if (error) throw ErrorHandler(400, error.message);
 
-    updatedUser = await updateUser(req.params.id, req.body);
+    updatedUser = await updateUser(_id, req.body);
     if (!updatedUser) {
       throw ErrorHandler(404, "Not found");
     }
   }
-  res.json(updatedUser);
+
+  // Щоб не повертати приватні дані типу паролю та id, працює навіть якщо такого поля у юзера немає
+  const { email, avatar, name, birthday, phone, city } = updatedUser;
+
+  console.log(updatedUser);
+  res.json({
+    user: {
+      email,
+      avatar,
+      name,
+      birthday,
+      phone,
+      city,
+    },
+  });
 };
 
 const currentController = (req, res, next) => {
-  const { email } = req.user.user;
-  res.json({ email });
+  const { email, avatar, name, birthday, phone, city } = req.user.user;
+  res.json({
+    email,
+    avatar,
+    name,
+    birthday,
+    phone,
+    city,
+  });
 };
 
 const logoutController = (req, res) => {
