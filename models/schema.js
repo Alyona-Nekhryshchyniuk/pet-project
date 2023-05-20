@@ -48,8 +48,7 @@ const userSchema = new Schema(
     },
     favoriteNotices: 
       {
-        type: Schema.ObjectId,
-        ref: "notice",
+        type: Array,
         default: [],
       },
 },
