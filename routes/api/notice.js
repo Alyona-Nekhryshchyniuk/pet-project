@@ -45,7 +45,7 @@ router.post(
   isTokenValidMiddleware(ctrl.addToFavoriteController)
 );
 router.get(
-  "/favorites",
+  "/favorites/list",
   authentificate,
   isTokenValidMiddleware(ctrl.getFavoritesController)
 );

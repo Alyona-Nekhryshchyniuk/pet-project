@@ -86,6 +86,11 @@ const noticeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "user",
     },
+    favoriteNotices: 
+      {
+        type: Array,
+        default: [],
+      },
   },
   { versionKey: false, timestamps: true }
 );
