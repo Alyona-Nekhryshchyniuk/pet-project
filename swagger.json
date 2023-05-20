@@ -197,7 +197,7 @@
                 "description": "Returns information about the currently authenticated user.",
                 "security": [
                     {
-                        "bearerAuth": []
+                       "Bearer": []
                     }
                 ],
                 "responses": {
@@ -1086,7 +1086,8 @@
                     },
                     "date": {
                         "type": "string",
-                        "format": "date"
+                        "format": "date",
+                        "example": "2023-05-20"
                     },
                     "breed": {
                         "type": "string",
