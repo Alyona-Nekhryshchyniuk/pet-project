@@ -25,6 +25,7 @@ const petSchema = new Schema(
       ref: "user",
       required: true,
     },
+<<<<<<< Updated upstream
     // birthDate: {
     //   type: String,
     //   required: [true, "Birth date is required"],
@@ -42,8 +43,27 @@ const petSchema = new Schema(
     //   default: null,
     // },
     photoURL: {
+=======
+    birthDate: {
       type: String,
+      required: [true, "Birth date is required"],
+    },
+    breed: {
+      type: String,
+      minLength: 2,
+      maxLength: 16,
+      required: [true, "Breed is required"],
+    },
+    comments: {
+      type: String,
+      minLength: 8,
+      maxLength: 120,
       default: null,
+    },
+    petsAvatar: {
+>>>>>>> Stashed changes
+      type: String,
+      // default: null,
     },
   },
   { timestamps: true, versionKey: false }
@@ -60,6 +80,7 @@ const petJOISchema = Joi.object({
       "Only letters can be accepted"
     )
     .required(),
+<<<<<<< Updated upstream
   // birthDate: Joi.date().less(Date.now()).format("DD.MM.YYYY").required(),
   // breed: Joi.string()
   //   .min(2)
@@ -81,6 +102,19 @@ const petJOISchema = Joi.object({
   //   size: Joi.number(),
   //   filename: Joi.string(),
   // }
+=======
+  birthDate: Joi.date().less(Date.now()).format("DD.MM.YYYY").required(),
+  breed: Joi.string()
+    .min(2)
+    .max(16)
+    .regex(
+      /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/,
+      "Only letters can be accepted"
+    )
+    .required(),
+  comments: Joi.string().min(8).max(120),
+  petsAvatar: Joi.string().required(),
+>>>>>>> Stashed changes
 });
 
 module.exports = { Pet, petJOISchema };
