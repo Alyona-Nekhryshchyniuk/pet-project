@@ -5,13 +5,13 @@ const { Pet } = require("../models/petShema");
 const { ErroHandler } = require("../helpers/ErrorHandler");
 
 const listYourPets = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner } = req.user.user;
   // const { page = 1, limit = 20 } = req.query;
   // const skip = (page - 1) * limit;
   const result = await Pet.find({ owner }, "-createdAt -updatedAt", {
     // skip,
     // limit,
-  }).populate("owner", "name date breed comments");
+  }).populate("owner", "name date breed comments petsAvatar");
   res.json(result);
 };
 
@@ -26,11 +26,11 @@ const listYourPets = async (req, res) => {
 // };
 
 const addPet = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner } = req.user.user;
   const result = await Pet.create({
     ...req.body,
     owner,
-    photoURL: req.file.path,
+    petsAvatar: req.file.path,
   });
   res.status(201).json(result);
 };
