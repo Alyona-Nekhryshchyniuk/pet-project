@@ -41,9 +41,9 @@ const petSchema = new Schema(
     //   maxLength: 120,
     //   default: null,
     // },
-    photoURL: {
+    petsAvatar: {
       type: String,
-      default: null,
+      // default: null,
     },
   },
   { timestamps: true, versionKey: false }
@@ -71,7 +71,7 @@ const petJOISchema = Joi.object({
   //   .required(),
   // comments: Joi.string().min(8).max(120),
   // imageFile: Joi
-  petsAvatar: Joi.object().required(),
+  petsAvatar: Joi.string().required(),
   //   {
   //   originalname: Joi.string().required(),
   //   fieldname: Joi.string(),
