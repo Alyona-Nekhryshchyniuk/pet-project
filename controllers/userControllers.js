@@ -13,7 +13,7 @@ const registerController = async (req, res) => {
 
   if (!user) throw ErrorHandler(409, "Email in use");
 
-  const { email, avatar, name, birthday, phone, city } = user;
+  const { email, avatar, name, birthday, phone, city, favoriteNotices } = user;
   const { _id } = user;
 
   const { SECRET } = process.env;
@@ -31,6 +31,7 @@ const registerController = async (req, res) => {
       birthday,
       phone,
       city,
+      favoriteNotices,
     },
   });
 };
@@ -60,6 +61,7 @@ const loginController = async (req, res) => {
       birthday: user.birthday,
       phone: user.phone,
       city: user.city,
+      favoriteNotices: user.favoriteNotices,
     },
   });
 };
@@ -85,7 +87,8 @@ const updateController = async (req, res) => {
   }
 
   // Щоб не повертати приватні дані типу паролю та id, працює навіть якщо такого поля у юзера немає
-  const { email, avatar, name, birthday, phone, city } = updatedUser;
+  const { email, avatar, name, birthday, phone, city, favoriteNotices } =
+    updatedUser;
 
   console.log(updatedUser);
   res.json({
@@ -97,12 +100,15 @@ const updateController = async (req, res) => {
       birthday,
       phone,
       city,
+      favoriteNotices,
     },
   });
 };
 
 const currentController = (req, res, next) => {
-  const { email, avatar, name, birthday, phone, city, _id } = req.user.user;
+  const { email, avatar, name, birthday, phone, city, favoriteNotices, _id } =
+    req.user.user;
+
   res.json({
     id: _id,
     email,
@@ -111,6 +117,7 @@ const currentController = (req, res, next) => {
     birthday,
     phone,
     city,
+    favoriteNotices,
   });
 };
 
