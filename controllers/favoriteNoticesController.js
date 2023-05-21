@@ -70,8 +70,9 @@ const getFavoritesController = async (req, res) => {
   };
 
   const favorites = await getFavoriteItems();
+  const total = favorites.length;
   favorites.reverse();
-  return res.status(200).json(favorites);
+  return res.status(200).json(favorites, total);
 };
 
 const removeFromFavoritesController = async (req, res) => {

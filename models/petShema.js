@@ -25,22 +25,22 @@ const petSchema = new Schema(
       ref: "user",
       required: true,
     },
-    // birthDate: {
-    //   type: String,
-    //   required: [true, "Birth date is required"],
-    // },
-    // breed: {
-    //   type: String,
-    //   minLength: 2,
-    //   maxLength: 16,
-    //   required: [true, "Breed is required"],
-    // },
-    // comments: {
-    //   type: String,
-    //   minLength: 8,
-    //   maxLength: 120,
-    //   default: null,
-    // },
+    birthDate: {
+      type: String,
+      required: [true, "Birth date is required"],
+    },
+    breed: {
+      type: String,
+      minLength: 2,
+      maxLength: 16,
+      required: [true, "Breed is required"],
+    },
+    comments: {
+      type: String,
+      minLength: 8,
+      maxLength: 120,
+      default: null,
+    },
     petsAvatar: {
       type: String,
       // default: null,
@@ -60,27 +60,17 @@ const petJOISchema = Joi.object({
       "Only letters can be accepted"
     )
     .required(),
-  // birthDate: Joi.date().less(Date.now()).format("DD.MM.YYYY").required(),
-  // breed: Joi.string()
-  //   .min(2)
-  //   .max(16)
-  //   .regex(
-  //     /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/,
-  //     "Only letters can be accepted"
-  //   )
-  //   .required(),
-  // comments: Joi.string().min(8).max(120),
-  // imageFile: Joi
-  petsAvatar: Joi.string().required(),
-  //   {
-  //   originalname: Joi.string().required(),
-  //   fieldname: Joi.string(),
-  //   encoding: Joi.string(),
-  //   mimetype: Joi.string(),
-  //   path: Joi.string().required(),
-  //   size: Joi.number(),
-  //   filename: Joi.string(),
-  // }
-});
+  birthDate: Joi.date().less(Date.now()).format("DD.MM.YYYY").required(),
+  breed: Joi.string()
+    .min(2)
+    .max(16)
+    .regex(
+      /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/,
+      "Only letters can be accepted"
+    )
+    .required(),
+  comments: Joi.string().min(8).max(120),
+  petsAvatar: Joi.string(),
+  });
 
 module.exports = { Pet, petJOISchema };
