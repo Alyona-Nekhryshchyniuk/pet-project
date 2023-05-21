@@ -197,7 +197,7 @@
                 "description": "Returns information about the currently authenticated user.",
                 "security": [
                     {
-                       "Bearer": []
+                        "Bearer": []
                     }
                 ],
                 "responses": {
@@ -331,6 +331,26 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of pets per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 12
+                        }
                     }
                 ],
                 "responses": {
@@ -375,6 +395,26 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of pets per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 12
+                        }
                     }
                 ],
                 "responses": {
@@ -418,6 +458,26 @@
                         "description": "Filter Notice by gender",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of pets per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 12
                         }
                     }
                 ],
@@ -509,12 +569,12 @@
                 }
             }
         },
-        "/api/notice/myAdds/:id": {
+        "/api/notice/myAdds": {
             "get": {
                 "tags": [
                     "Notice"
                 ],
-                "summary": "Get user adds by ID",
+                "summary": "Get a list of the authenticated user's pet notices",
                 "security": [
                     {
                         "Bearer": []
@@ -522,13 +582,29 @@
                 ],
                 "parameters": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "description": "User ID",
-                        "required": true,
+                        "name": "query",
+                        "in": "query",
+                        "description": "Search query for the add title",
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "gender",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Filter adds by gender"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer",
+                            "default": "12"
+                        },
+                        "description": "Number of adds per page"
                     }
                 ],
                 "responses": {
@@ -537,29 +613,32 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/noticeResponse"
+                                    "pets": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/noticeResponse"
+                                        }
+                                    },
+                                    "total": {
+                                        "type": "integer",
+                                        "description": "Total number of adds"
                                     }
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "409": {
-                        "description": "Conflict"
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 }
             }
         },
-        "/api/notice/favorites": {
+        "/api/notice/favorites/list": {
             "get": {
                 "tags": [
-                    "Favorites"
+                    "Notice"
                 ],
-                "summary": "Get favorite notices",
+                "summary": "Get user's favorite notices",
                 "security": [
                     {
                         "Bearer": []
@@ -568,12 +647,20 @@
                 "parameters": [
                     {
                         "in": "query",
+                        "name": "query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description":"Search query for the favorite notice title"
+                    },
+                    {
+                        "in": "query",
                         "name": "page",
                         "schema": {
                             "type": "integer",
                             "default": 1
                         },
-                        "description": "Page number for pagination"
+                        "description": "Number of favorite notices per page"
                     },
                     {
                         "in": "query",
@@ -587,7 +674,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list of favorite notices",
+                        "description": "A list user's of favorite notices",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -611,7 +698,7 @@
         "/api/notice/favorites/{id}": {
             "post": {
                 "tags": [
-                    "Favorites"
+                    "Notice"
                 ],
                 "summary": "Add a notice to favorites",
                 "security": [
@@ -657,7 +744,7 @@
             "delete": {
                 "summary": "Remove notice from favorites",
                 "tags": [
-                    "Favorites"
+                    "Notice"
                 ],
                 "parameters": [
                     {
@@ -1009,7 +1096,7 @@
                     "email": {
                         "type": "string",
                         "format": "email",
-                        "description":"User email"
+                        "description": "User email"
                     },
                     "avatar": {
                         "type": "string",
@@ -1043,7 +1130,7 @@
                 "properties": {
                     "email": {
                         "type": "string",
-                        "format":"email"
+                        "format": "email"
                     },
                     "name": {
                         "type": "string"
@@ -1326,10 +1413,10 @@
                         "type": "string",
                         "description": "The address of the friend"
                     },
-                    "workDays":{
+                    "workDays": {
                         "type": "array",
-                        "items":{
-                            "type":"string"
+                        "items": {
+                            "type": "string"
                         },
                         "description": "The work days of the friend"
                     },
