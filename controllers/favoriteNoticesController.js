@@ -18,15 +18,12 @@ const addToFavoriteController = async (req, res) => {
   const isInFavorites = user.favoriteNotices.includes(id);
 
   if (isInFavorites) {
-    throw ErrorHandler(
-      409,
-      `Notice with id: ${id} has been already added`
-    );
+    throw ErrorHandler(409, `Notice with id: ${id} has been already added`);
   }
 
   await User.findByIdAndUpdate(
     { _id: owner },
-    { $push: {favoriteNotices: new mongoose.Types.ObjectId(id)}},
+    { $push: { favoriteNotices: new mongoose.Types.ObjectId(id) } },
     { new: true }
   );
 
@@ -69,10 +66,10 @@ const getFavoritesController = async (req, res) => {
     return items;
   };
 
-  const favorites = await getFavoriteItems();
-  const total = favorites.length;
-  favorites.reverse();
-  return res.status(200).json(favorites, total);
+  const pets = await getFavoriteItems();
+  const total = pets.length;
+  pets.reverse();
+  return res.status(200).json({ pets, total });
 };
 
 const removeFromFavoritesController = async (req, res) => {
@@ -89,7 +86,7 @@ const removeFromFavoritesController = async (req, res) => {
     { $pull: { favoriteNotices: { $in: [new mongoose.Types.ObjectId(id)] } } },
     { new: true }
   );
-  
+
   res.status(200).json({
     message: `Notice with id=${id} has been removed from favorites`,
   });
