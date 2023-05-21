@@ -8,7 +8,7 @@ const swaggerDocument = require("./swagger.json");
 const { authRouter } = require("./routes/api/auth");
 const { yourPetsRouter } = require("./routes/api/yourpets");
 const noticeRouter = require("./routes/api/notice");
-// const { favoriteNoticesRouter } = require("./routes/api/favoriteNotice");
+// const favoriteNoticesRouter = require("./routes/api/favoriteNotice");
 const { newsRouter } = require("./routes/api/news");
 const { friendsRouter } = require("./routes/api/friends");
 
@@ -25,7 +25,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/auth", authRouter);
 app.use("/api/yourPets", yourPetsRouter);
 app.use("/api/notice", noticeRouter);
-// app.use("/api/notice/favorites", favoriteNoticesRouter);
+// app.use("/api/favorites", favoriteNoticesRouter);
 app.use("/api/news", newsRouter);
 app.use("/api/friends", friendsRouter);
 

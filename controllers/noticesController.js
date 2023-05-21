@@ -1,43 +1,28 @@
-const moment = require("moment");
 const ErrorHandler = require("../helpers/ErrorHandler");
+const filter = require("../helpers/filter");
 const { Notice, addNoticeJOISchema } = require("../models/notice");
 
-const filter = (query, gender) => {
-  if (query && gender) {
-    return { title: { $regex: query, $options: "i" }, sex: gender };
-  }
-  if (query && !gender) {
-    return { title: { $regex: query, $options: "i" } };
-  }
-  if (!query && gender) {
-    return { sex: gender };
-  }
-  if (!query && !gender) {
-    return {};
-  }
-};
-
 const getAllPetsController = async (req, res, next) => {
-  const { query, gender, page = 1, limit = 12 } = req.query;
+  const { query, gender, page = 1, limit = 12, age } = req.query;
   const skip = (page - 1) * limit;
 
-  const pets = await Notice.find(filter(query, gender), "-updatedAt", {
+  const pets = await Notice.find(filter(query, gender, age), "-updatedAt", {
     skip,
     limit,
   }).sort({
     createdAt: -1,
   });
 
-  const totalNotice = await Notice.find(filter(query, gender));
+  const totalNotice = await Notice.find(filter(query, gender, age));
   const total = totalNotice.length;
   return res.json({ pets, total });
 };
 
 const getSellPetsController = async (req, res, next) => {
-  const { query, gender, page = 1, limit = 12 } = req.query;
+  const { query, gender, page = 1, limit = 1, age } = req.query;
   const skip = (page - 1) * limit;
 
-  const filters = await filter(query, gender);
+  const filters = await filter(query, gender, age);
   const pets = await Notice.find(
     { ...filters, category: "sell" },
     "-updatedAt",
@@ -57,9 +42,9 @@ const getSellPetsController = async (req, res, next) => {
 };
 
 const getLostPetsController = async (req, res, next) => {
-  const { query, gender, page = 1, limit = 12 } = req.query;
+  const { query, gender, page = 1, limit = 12, age } = req.query;
   const skip = (page - 1) * limit;
-  const filters = filter(query, gender);
+  const filters = filter(query, gender, age);
 
   const pets = await Notice.find(
     {
@@ -81,10 +66,10 @@ const getLostPetsController = async (req, res, next) => {
 };
 
 const getInGoodHandsPetsController = async (req, res, next) => {
-  const { query, gender, page = 1, limit = 12 } = req.query;
+  const { query, gender, page = 1, limit = 12, age } = req.query;
   const skip = (page - 1) * limit;
 
-  const filters = filter(query, gender);
+  const filters = filter(query, gender, age);
 
   const pets = await Notice.find(
     {
@@ -137,22 +122,22 @@ const deleteNoticeController = async (req, res) => {
 };
 
 const getMyAddsController = async (req, res, next) => {
-  // const { _id } = req.user;
-  // const { query, gender, page = 1, limit = 12 } = req.query;
-  // const skip = (page - 1) * limit;
-  // const filters = filter(query, gender);
-  // const pets = await Notice.find({ ...filters, owner: _id }, "-updatedAt", {
-  //   skip,
-  //   limit,
-  // }).sort({
-  //   createdAt: -1,
-  // });
-  // const totalNotice = await Notice.find({
-  //   ...filters,
-  //   owner: owners,
-  // });
-  // const total = totalNotice.length;
-  // res.json({ pets, total });
+  const { _id } = req.user;
+  const { query, gender, page = 1, limit = 12, age } = req.query;
+  const skip = (page - 1) * limit;
+  const filters = filter(query, gender, age);
+  const pets = await Notice.find({ ...filters, owner: _id }, "-updatedAt", {
+    skip,
+    limit,
+  }).sort({
+    createdAt: -1,
+  });
+  const totalNotice = await Notice.find({
+    ...filters,
+    owner: _id,
+  });
+  const total = totalNotice.length;
+  res.json({ pets, total });
 };
 
 module.exports = {
