@@ -9,9 +9,11 @@ const getAllPetsController = async (req, res, next) => {
   const pets = await Notice.find(filter(query, gender, age), "-updatedAt", {
     skip,
     limit,
-  }).sort({
-    createdAt: -1,
-  });
+  })
+    .sort({
+      createdAt: -1,
+    })
+    .populate("owner", "email phone");
 
   const totalNotice = await Notice.find(filter(query, gender, age));
   const total = totalNotice.length;
@@ -30,9 +32,12 @@ const getSellPetsController = async (req, res, next) => {
       skip,
       limit,
     }
-  ).sort({
-    createdAt: -1,
-  });
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .populate("owner", "email phone");
+
   const totalNotice = await Notice.find({
     ...filters,
     category: "sell",
@@ -56,7 +61,12 @@ const getLostPetsController = async (req, res, next) => {
       skip,
       limit,
     }
-  );
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .populate("owner", "email phone");
+
   const totalNotice = await Notice.find({
     ...filters,
     category: "lost/found",
@@ -81,7 +91,9 @@ const getInGoodHandsPetsController = async (req, res, next) => {
       skip,
       limit,
     }
-  ).sort({ createdAt: -1 });
+  )
+    .sort({ createdAt: -1 })
+    .populate("owner", "email phone");
   const totalNotice = await Notice.find({
     ...filters,
     category: "in good hands",
@@ -129,9 +141,11 @@ const getMyAddsController = async (req, res, next) => {
   const pets = await Notice.find({ ...filters, owner: _id }, "-updatedAt", {
     skip,
     limit,
-  }).sort({
-    createdAt: -1,
-  });
+  })
+    .sort({
+      createdAt: -1,
+    })
+    .populate("owner", "email phone");
   const totalNotice = await Notice.find({
     ...filters,
     owner: _id,
