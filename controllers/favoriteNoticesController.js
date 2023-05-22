@@ -1,6 +1,6 @@
 const ErrorHandler = require("../helpers/ErrorHandler");
 const tryCatchMiddleware = require("../middlewares/tryCatchMiddleware");
-const { getAllPetsController } = require("./noticesController");
+const filter = require("../helpers/filter");
 const { User } = require("../models/schema");
 const { Notice } = require("../models/notice");
 const mongoose = require("mongoose");
@@ -35,7 +35,7 @@ const addToFavoriteController = async (req, res) => {
 
 const getFavoritesController = async (req, res) => {
   const { _id: owner } = req.user.user;
-  const { page = 1, limit = 12, query, gender } = req.query;
+  const { page = 1, limit = 12, query, gender, age } = req.query;
   const skip = (page - 1) * limit;
 
   // const user = await User.findOne({ _id: owner }).populate({
@@ -66,23 +66,8 @@ const getFavoritesController = async (req, res) => {
 
     return items;
   };
-
-  const filter = (query, gender) => {
-    if (query && gender) {
-      return { title: { $regex: query, $options: "i" }, sex: gender };
-    }
-    if (query && !gender) {
-      return { title: { $regex: query, $options: "i" } };
-    }
-    if (!query && gender) {
-      return { sex: gender };
-    }
-    if (!query && !gender) {
-      return {};
-    }
-  };
-
-  const pets = await getFavoriteItems(filter(query, gender));
+  const filters = filter(query, gender, age);
+  const pets = await getFavoriteItems(...filters);
   const total = pets.length;
 
   pets.reverse();
