@@ -5,12 +5,6 @@ const { User } = require("../models/schema");
 const { Notice } = require("../models/notice");
 const mongoose = require("mongoose");
 
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
-
 const addToFavoriteController = async (req, res) => {
   const { id } = req.params;
   const { _id: owner } = req.user.user;
@@ -38,15 +32,6 @@ const getFavoritesController = async (req, res) => {
   const { page = 1, limit = 12, query, gender, age } = req.query;
   const skip = (page - 1) * limit;
 
-  // const user = await User.findOne({ _id: owner }).populate({
-  //   path: "favoriteNotices",
-  //   match: { title: { $regex: new RegExp(search, "i") } },
-  //   options: {
-  //     select: "-createdAt -updatedAt",
-  //   },
-  // });
-  // const totalItems = user.favoriteNotices.length;
-
   const userDataWithNotices = await User.findOne({ _id: owner }).populate({
     path: "favoriteNotices",
     match: { title: { $regex: new RegExp(query, "i") } },
@@ -56,18 +41,18 @@ const getFavoritesController = async (req, res) => {
       limit: Number(limit),
     },
   });
+  const allPets = await Notice.find(filter(query, gender, age));
 
-  const getFavoriteItems = async () => {
-    const items = [];
-    await asyncForEach(userDataWithNotices.favoriteNotices, async (element) => {
-      const notice = await Notice.findById(element);
-      items.push(notice);
+  const pets = [];
+
+  allPets.forEach((pet) => {
+    userDataWithNotices.favoriteNotices.forEach((favId) => {
+      if (pet.id === favId.toString()) {
+        pets.push(pet);
+      }
     });
+  });
 
-    return items;
-  };
-  // const filters = filter(query, gender, age);
-  const pets = await getFavoriteItems(filter(query, gender, age));
   const total = pets.length;
 
   pets.reverse();
