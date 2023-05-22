@@ -1,6 +1,6 @@
 const ErrorHandler = require("../helpers/ErrorHandler");
 const tryCatchMiddleware = require("../middlewares/tryCatchMiddleware");
-const {getAllPetsController} = require("./noticesController");
+const { getAllPetsController } = require("./noticesController");
 const { User } = require("../models/schema");
 const { Notice } = require("../models/notice");
 const mongoose = require("mongoose");
@@ -82,13 +82,12 @@ const getFavoritesController = async (req, res) => {
     }
   };
 
-  const favorites = await getFavoriteItems(filter(query, gender));
-  const total = favorites.length;
+  const pets = await getFavoriteItems(filter(query, gender));
+  const total = pets.length;
 
-  favorites.reverse();
+  pets.reverse();
 
-  return res.status(200).json({favorites, total});
-
+  return res.status(200).json({ pets, total });
 };
 
 const removeFromFavoritesController = async (req, res) => {
