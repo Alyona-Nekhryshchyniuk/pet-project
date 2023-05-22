@@ -66,8 +66,8 @@ const getFavoritesController = async (req, res) => {
 
     return items;
   };
-  const filters = filter(query, gender, age);
-  const pets = await getFavoriteItems(...filters);
+  // const filters = filter(query, gender, age);
+  const pets = await getFavoriteItems(filter(query, gender, age));
   const total = pets.length;
 
   pets.reverse();
