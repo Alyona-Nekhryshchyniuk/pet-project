@@ -2,6 +2,7 @@ const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 
 const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
+const datePattern = /^[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}$/;
 
 const handleMongooseError = (error, data, next) => {
   const { name, code } = error;
@@ -14,7 +15,7 @@ const noticeSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ["pet", "sell", "lostFound", "hands"],
+      enum: ["pet", "sell", "lost/found", "in good hands"],
       default: "sell",
     },
     title: {
@@ -31,6 +32,7 @@ const noticeSchema = new Schema(
     date: {
       type: String,
       required: true,
+      match: [datePattern, "Please enter the date in the format DD-MM-YYYY"],
     },
     breed: {
       type: String,
@@ -76,8 +78,6 @@ const noticeSchema = new Schema(
     comments: {
       type: String,
       required: false,
-      minlength: 8,
-      maxlength: 120,
     },
     image: {
       type: String,
@@ -99,7 +99,9 @@ noticeSchema.post("save", handleMongooseError);
 const Notice = model("notice", noticeSchema);
 
 const addNoticeJOISchema = Joi.object({
-  category: Joi.string().valid("pet", "sell", "lostFound", "hands").required(),
+  category: Joi.string()
+    .valid("pet", "sell", "lost/found", "in good hands")
+    .required(),
   title: Joi.string().required().messages({
     "any.required": `"title" is required`,
     "string.empty": `"title" cannot be empty`,
@@ -126,7 +128,7 @@ const addNoticeJOISchema = Joi.object({
     "string.base": `"location" must be string`,
   }),
   price: Joi.any(),
-  comments: Joi.string().min(8).max(120),
+  comments: Joi.string().min(0).max(120),
   image: Joi.string(),
 });
 

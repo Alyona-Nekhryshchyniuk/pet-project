@@ -117,7 +117,7 @@ const addNoticeController = async (req, res, next) => {
 
 const getNoticeControllerById = async (req, res, next) => {
   const { id } = req.params;
-  const result = await Notice.findById(id);
+  const result = await Notice.findById(id).populate("owner", "email phone");
   if (!result) {
     throw ErrorHandler(404, "Notice not found");
   }
