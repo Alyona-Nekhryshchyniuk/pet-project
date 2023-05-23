@@ -41,7 +41,10 @@ const getFavoritesController = async (req, res) => {
       limit: Number(limit),
     },
   });
-  const allPets = await Notice.find(filter(query, gender, age));
+  const allPets = await Notice.find(filter(query, gender, age)).populate(
+    "owner",
+    "email phone"
+  );
 
   const pets = [];
 
