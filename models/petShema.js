@@ -60,7 +60,7 @@ const petJOISchema = Joi.object({
       "Only letters can be accepted"
     )
     .required(),
-  birthDate: Joi.date().less(Date.now()).format("DD.MM.YYYY").required(),
+  birthDate: Joi.string().required(),
   breed: Joi.string()
     .min(2)
     .max(16)
@@ -71,6 +71,6 @@ const petJOISchema = Joi.object({
     .required(),
   comments: Joi.string().min(8).max(120),
   petsAvatar: Joi.string(),
-  });
+});
 
 module.exports = { Pet, petJOISchema };
