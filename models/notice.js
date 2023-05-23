@@ -14,7 +14,7 @@ const noticeSchema = new Schema(
     category: {
       type: String,
       required: true,
-      enum: ["my pet", "sell", "lost/found", "in good hands"],
+      enum: ["pet", "sell", "lostFound", "hands"],
       default: "sell",
     },
     title: {
@@ -99,9 +99,7 @@ noticeSchema.post("save", handleMongooseError);
 const Notice = model("notice", noticeSchema);
 
 const addNoticeJOISchema = Joi.object({
-  category: Joi.string()
-    .valid("my pet", "sell", "lost/found", "in good hands")
-    .required(),
+  category: Joi.string().valid("pet", "sell", "lostFound", "hands").required(),
   title: Joi.string().required().messages({
     "any.required": `"title" is required`,
     "string.empty": `"title" cannot be empty`,
