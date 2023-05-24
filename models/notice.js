@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { Schema, model } = require("mongoose");
 
-const textRegexp = /^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{2,16}$/;
+const textRegexp = /^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-zA-Zа-яА-ЯіІїЇґҐ]+)*$/;
 const datePattern = /^[0-9]{2}[-]{1}[0-9]{2}[-]{1}[0-9]{4}$/;
 
 const handleMongooseError = (error, data, next) => {
