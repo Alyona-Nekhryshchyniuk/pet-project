@@ -26,14 +26,6 @@ router.post(
   isTokenValidMiddleware(ctrl.addPet)
 );
 
-router.put(
-  "/:id",
-  authentificate,
-  isValidId,
-  validateBody(petJOISchema),
-  isTokenValidMiddleware(ctrl.updatePet)
-);
-
 router.delete("/:id", authentificate, isValidId, isTokenValidMiddleware(ctrl.removePet));
 
 module.exports = { yourPetsRouter: router };
