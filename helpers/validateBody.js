@@ -1,4 +1,4 @@
-const {ErrorHandler} = require("./ErrorHandler");
+const ErrorHandler = require("./ErrorHandler");
 
 const validateBody = schema => {
     const func = async(req, res, next)=> {
