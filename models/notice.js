@@ -128,7 +128,7 @@ const addNoticeJOISchema = Joi.object({
     "string.base": `"location" must be string`,
   }),
   price: Joi.any(),
-  comments: Joi.string().min(0).max(120),
+  comments: Joi.string().min(1).max(120),
   image: Joi.string(),
 });
 
