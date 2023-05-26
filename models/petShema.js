@@ -37,7 +37,7 @@ const petSchema = new Schema(
     },
     comments: {
       type: String,
-      minLength: 8,
+      minLength: 1,
       maxLength: 120,
       default: null,
     },
@@ -69,7 +69,7 @@ const petJOISchema = Joi.object({
       "Only letters can be accepted"
     )
     .required(),
-  comments: Joi.string().min(8).max(120),
+  comments: Joi.string().min(1).max(120),
   petsAvatar: Joi.string(),
 });
 
