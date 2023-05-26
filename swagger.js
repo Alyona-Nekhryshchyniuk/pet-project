@@ -1,4 +1,7 @@
-{
+require('dotenv').config();
+const serverUrl = process.env.SERVER_URL || 'http://localhost:3000';
+
+const swagger = {
     "openapi": "3.0.3",
     "info": {
         "version": "1.0.0",
@@ -18,7 +21,7 @@
     ],
     "servers": [
         {
-            "url": "http://localhost:3000"
+            "url": serverUrl
         }
     ],
     "tags": [
@@ -1394,3 +1397,5 @@
         }
     }
 }
+
+module.exports =swagger
