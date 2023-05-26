@@ -2,7 +2,9 @@ const tryCatchMiddleware = require("../middlewares/tryCatchMiddleware");
 
 const { Pet } = require("../models/petShema");
 
-const ErroHandler = require("../helpers/ErrorHandler");
+
+const  ErrorHandler  = require("../helpers/ErrorHandler");
+
 
 const listYourPets = async (req, res) => {
   const { _id: owner } = req.user.user;
@@ -24,11 +26,21 @@ const addPet = async (req, res) => {
   res.status(201).json(result);
 };
 
+
+const updatePet = async (req, res) => {
+  const { id } = req.params;
+  const result = await Pet.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw ErrorHandler(404, `Pet with ${id} not found`);
+  }
+  res.json(result);
+};
+
 const removePet = async (req, res) => {
   const { id } = req.params;
   const result = await Pet.findByIdAndDelete(id);
   if (!result) {
-    throw ErroHandler(404, `Pet with ${id} not found`);
+    throw ErrorHandler(404, `Pet with ${id} not found`);
   }
 
   res.json({

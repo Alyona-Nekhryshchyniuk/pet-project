@@ -883,53 +883,6 @@
             }
         },
         "/api/yourPets/{id}": {
-            "put": {
-                "summary": "Update an existing pet",
-                "tags": [
-                    "Pets"
-                ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The unique identifier of the pet",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "$ref": "#/components/schemas/petRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Pet updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/petResponse"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Pet not found"
-                    }
-                }
-            },
             "delete": {
                 "summary": "Delete a pet",
                 "tags": [
@@ -1156,9 +1109,9 @@
                     "category": {
                         "type": "string",
                         "enum": [
-                            "my pet",
+                            "pet",
                             "sell",
-                            "lost-found",
+                            "lost/found",
                             "in good hands"
                         ],
                         "default": "sell"
@@ -1228,9 +1181,9 @@
                     "category": {
                         "type": "string",
                         "enum": [
-                            "my pet",
+                            "pet",
                             "sell",
-                            "lost-found",
+                            "lost/found",
                             "in good hands"
                         ],
                         "default": "sell"
@@ -1314,6 +1267,7 @@
                         "type": "string",
                         "minLength": 2,
                         "maxLength": 16,
+                        "pattern": "^[a-zA-Zа-яА-ЯіІїЇґҐ]+(?: [a-Zа-яА-ЯіІїЇґҐ]+)*$",
                         "description": "The pet's breed"
                     },
                     "comments": {
@@ -1363,7 +1317,7 @@
                         "type": "string",
                         "description": "Any comments about the pet"
                     },
-                    "photoURL": {
+                    "petsAvatar": {
                         "type": "string",
                         "description": "The URL of the pet's photo"
                     }
