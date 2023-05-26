@@ -18,6 +18,9 @@ const storage = new CloudinaryStorage({
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
+  params: {
+    transformation: [{ quality: "75" }],
+  },
 });
 
 const storageSecond = new CloudinaryStorage({
@@ -26,6 +29,9 @@ const storageSecond = new CloudinaryStorage({
   allowedFormats: ["jpg", "png"],
   filename: (req, file, cb) => {
     cb(null, file.originalname);
+  },
+  params: {
+    transformation: [{ quality: "75" }],
   },
 });
 
@@ -36,10 +42,18 @@ const storageThird = new CloudinaryStorage({
   filename: (req, file, cb) => {
     cb(null, file.originalname);
   },
+  params: {
+    transformation: [{ quality: "75" }],
+  },
 });
 
 const uploadCloud = multer({ storage });
 const uploadCloudSecond = multer({ storage: storageSecond });
 const uploadCloudThird = multer({ storage: storageThird });
 
-module.exports = { uploadCloud, cloudinary, uploadCloudSecond, uploadCloudThird };
+module.exports = {
+  uploadCloud,
+  cloudinary,
+  uploadCloudSecond,
+  uploadCloudThird,
+};
